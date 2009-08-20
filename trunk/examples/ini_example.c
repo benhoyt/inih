@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "ini.h"
+#include "../ini.h"
 
 typedef struct
 {
@@ -11,7 +11,8 @@ typedef struct
     const char* email;
 } configuration;
 
-static int handler(void* user, const char* section, const char* name, const char* value)
+static int handler(void* user, const char* section, const char* name,
+                   const char* value)
 {
     configuration* pconfig = (configuration*)user;
 

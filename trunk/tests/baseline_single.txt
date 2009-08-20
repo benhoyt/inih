@@ -1,0 +1,26 @@
+no_file.ini: e=-1 user=0
+... [section1]
+... one=This is a test;
+... two=1234;
+... [ section 2 ]
+... happy=4;
+... sad=;
+normal.ini: e=0 user=101
+... [section1]
+... name1=value1;
+... name2=value2;
+bad_section.ini: e=3 user=102
+bad_comment.ini: e=1 user=102
+... [section]
+... a=b;
+... user=parse_error;
+... c=d;
+user_error.ini: e=3 user=104
+... [section1]
+... single1=abc;
+... multi=this is a;
+... single2=xyz;
+... [section2]
+... multi=a;
+multi_line.ini: e=4 user=105
+bad_multi.ini: e=1 user=105
