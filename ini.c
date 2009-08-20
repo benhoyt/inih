@@ -1,6 +1,11 @@
-/* inih -- simple .INI file parser */
+/* inih -- simple .INI file parser
 
-/* Copyright (c) 2009, Brush Technology -- New BSD license, see ini.h */
+inih is released under the New BSD license (see LICENSE.txt). Go to the project
+home page for more info:
+
+http://code.google.com/p/inih/
+
+*/
 
 #include <stdio.h>
 #include <ctype.h>
