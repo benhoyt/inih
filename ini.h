@@ -10,6 +10,11 @@ http://code.google.com/p/inih/
 #ifndef __INI_H__
 #define __INI_H__
 
+/* Make this header file easier to include in C++ code */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
    is "" if name=value pair parsed before any section heading.
@@ -31,6 +36,10 @@ int ini_parse(const char* filename,
    name for each subsequent line parsed. */
 #ifndef INI_ALLOW_MULTILINE
 #define INI_ALLOW_MULTILINE 1
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* __INI_H__ */
