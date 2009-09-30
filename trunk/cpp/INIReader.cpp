@@ -1,6 +1,7 @@
 // Read an INI file into easy-to-access name/value pairs.
 
 #include <cctype>
+#include <cstdlib>
 #include "../ini.h"
 #include "INIReader.h"
 
@@ -24,7 +25,8 @@ string INIReader::Get(string section, string name, string default_value)
 
 long INIReader::GetInteger(string section, string name, long default_value)
 {
-    const char* value = Get(section, name, "").c_str();
+    string valstr = Get(section, name, "");
+    const char* value = valstr.c_str();
     char* end;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
     long n = strtol(value, &end, 0);
