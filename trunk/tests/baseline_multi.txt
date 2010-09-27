@@ -5,6 +5,12 @@ no_file.ini: e=-1 user=0
 ... [ section 2 ]
 ... happy=4;
 ... sad=;
+... [comment_test]
+... test1=1;2;3;
+... test2=2;3;4;this won't be a comment, needs whitespace before ';';
+... test;3=345;
+... test4=4#5#6;
+... test4=# test6 = 678 ; entire line commented, except in MULTILINE mode;
 normal.ini: e=0 user=101
 ... [section1]
 ... name1=value1;
