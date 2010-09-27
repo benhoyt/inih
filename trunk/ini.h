@@ -23,8 +23,8 @@ extern "C" {
    pointer as well as section, name, and value (data only valid for duration
    of handler call). Handler should return nonzero on success, zero on error.
 
-   Returns 0 on success, line number of first error on parse error, or -1 on
-   file open error.
+   Returns 0 on success, line number of first error on parse error (doesn't
+   stop on first error), or -1 on file open error.
 */
 int ini_parse(const char* filename,
               int (*handler)(void* user, const char* section,
