@@ -17,7 +17,8 @@ extern "C" {
 
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
-   is "" if name=value pair parsed before any section heading.
+   is "" if name=value pair parsed before any section heading. name:value
+   pairs are also supported as a concession to Python's ConfigParser.
 
    For each name=value pair parsed, call handler function with given user
    pointer as well as section, name, and value (data only valid for duration

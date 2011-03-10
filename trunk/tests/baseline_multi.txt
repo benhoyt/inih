@@ -11,6 +11,10 @@ no_file.ini: e=-1 user=0
 ... test;3=345;
 ... test4=4#5#6;
 ... test4=# test6 = 678 ; entire line commented, except in MULTILINE mode;
+... [colon_tests]
+... Content-Type=text/html;
+... foo=bar;
+... adams=42;
 normal.ini: e=0 user=101
 ... [section1]
 ... name1=value1;
@@ -31,5 +35,9 @@ user_error.ini: e=3 user=104
 ... multi=a;
 ... multi=b;
 ... multi=c;
+... [section3]
+... single=ghi;
+... multi=the quick;
+... multi=brown fox;
 multi_line.ini: e=0 user=105
 bad_multi.ini: e=1 user=105
