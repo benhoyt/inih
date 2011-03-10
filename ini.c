@@ -108,9 +108,12 @@ int ini_parse(const char* filename,
             }
         }
         else if (*start && *start != ';') {
-            /* Not a comment, must be a name=value pair */
+            /* Not a comment, must be a name[=:]value pair */
             end = find_char_or_comment(start, '=');
-            if (*end == '=') {
+            if (*end != '=') {
+                end = find_char_or_comment(start, ':');
+            }
+            if (*end == '=' || *end == ':') {
                 *end = '\0';
                 name = rstrip(start);
                 value = lskip(end + 1);
@@ -119,13 +122,13 @@ int ini_parse(const char* filename,
                     *end = '\0';
                 rstrip(value);
 
-                /* Valid name=value pair found, call handler */
+                /* Valid name[=:]value pair found, call handler */
                 strncpy0(prev_name, name, sizeof(prev_name));
                 if (!handler(user, section, name, value) && !error)
                     error = lineno;
             }
             else if (!error) {
-                /* No '=' found on name=value line */
+                /* No '=' or ':' found on name[=:]value line */
                 error = lineno;
             }
         }
