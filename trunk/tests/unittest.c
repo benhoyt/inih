@@ -14,7 +14,7 @@ tcc -DINI_ALLOW_MULTILINE=0 ../ini.c -run unittest.c > baseline_single.txt
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include "../ini.h"
 
 int User;
