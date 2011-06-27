@@ -15,6 +15,8 @@ http://code.google.com/p/inih/
 extern "C" {
 #endif
 
+#include <stdio.h>
+
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
    is "" if name=value pair parsed before any section heading. name:value
