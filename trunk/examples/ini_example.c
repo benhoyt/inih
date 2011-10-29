@@ -1,6 +1,7 @@
 /* Example: parse a simple configuration file */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../ini.h"
 
@@ -23,7 +24,10 @@ static int handler(void* user, const char* section, const char* name,
         pconfig->name = strdup(value);
     } else if (MATCH("user", "email")) {
         pconfig->email = strdup(value);
+    } else {
+        return 0;  /* unknown section/name, error */
     }
+    return 1;
 }
 
 int main(int argc, char* argv[])
