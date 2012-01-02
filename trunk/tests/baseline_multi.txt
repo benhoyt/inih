@@ -10,7 +10,6 @@ no_file.ini: e=-1 user=0
 ... test2=2;3;4;this won't be a comment, needs whitespace before ';';
 ... test;3=345;
 ... test4=4#5#6;
-... test4=# test6 = 678 ; entire line commented, except in MULTILINE mode;
 ... [colon_tests]
 ... Content-Type=text/html;
 ... foo=bar;
@@ -39,5 +38,6 @@ user_error.ini: e=3 user=104
 ... single=ghi;
 ... multi=the quick;
 ... multi=brown fox;
+... name=bob smith;
 multi_line.ini: e=0 user=105
 bad_multi.ini: e=1 user=105
