@@ -76,7 +76,15 @@ int ini_parse_file(FILE* file,
     /* Scan through file line by line */
     while (fgets(line, sizeof(line), file) != NULL) {
         lineno++;
-        start = lskip(rstrip(line));
+
+        start = line;
+#if INI_ALLOW_BOM
+        if (lineno == 1 && start[0] == 0xEF && start[1] == 0xBB &&
+                           start[2] == 0xBF) {
+            start += 3;
+        }
+#endif
+        start = lskip(rstrip(start));
 
         if (*start == ';' || *start == '#') {
             /* Per Python ConfigParser, allow '#' comments at start of line */

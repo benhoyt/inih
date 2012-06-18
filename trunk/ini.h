@@ -48,6 +48,12 @@ int ini_parse_file(FILE* file,
 #define INI_ALLOW_MULTILINE 1
 #endif
 
+/* Nonzero to allow a UTF-8 BOM sequence (0xEF 0xBB 0xBF) at the start of
+   the file. See http://code.google.com/p/inih/issues/detail?id=21 */
+#ifndef INI_ALLOW_BOM
+#define INI_ALLOW_BOM 1
+#endif
+
 #ifdef __cplusplus
 }
 #endif
