@@ -53,5 +53,6 @@ int main(void)
     parse("user_error.ini");
     parse("multi_line.ini");
     parse("bad_multi.ini");
+    parse("bom.ini");
     return 0;
 }

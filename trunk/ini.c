@@ -79,8 +79,9 @@ int ini_parse_file(FILE* file,
 
         start = line;
 #if INI_ALLOW_BOM
-        if (lineno == 1 && start[0] == 0xEF && start[1] == 0xBB &&
-                           start[2] == 0xBF) {
+        if (lineno == 1 && (unsigned char)start[0] == 0xEF &&
+                           (unsigned char)start[1] == 0xBB &&
+                           (unsigned char)start[2] == 0xBF) {
             start += 3;
         }
 #endif
