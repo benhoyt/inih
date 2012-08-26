@@ -17,7 +17,7 @@ static int handler(void* user, const char* section, const char* name,
 {
     configuration* pconfig = (configuration*)user;
 
-    #define MATCH(s, n) stricmp(section, s) == 0 && stricmp(name, n) == 0
+    #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
     if (MATCH("protocol", "version")) {
         pconfig->version = atoi(value);
     } else if (MATCH("user", "name")) {
