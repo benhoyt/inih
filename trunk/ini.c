@@ -13,7 +13,10 @@ http://code.google.com/p/inih/
 
 #include "ini.h"
 
-#define MAX_LINE 200
+#if !INI_USE_STACK
+#include <stdlib.h>
+#endif
+
 #define MAX_SECTION 50
 #define MAX_NAME 50
 
@@ -62,7 +65,11 @@ int ini_parse_file(FILE* file,
                    void* user)
 {
     /* Uses a fair bit of stack (use heap instead if you need to) */
-    char line[MAX_LINE];
+#if INI_USE_STACK
+    char line[INI_MAX_LINE];
+#else
+    char* line;
+#endif
     char section[MAX_SECTION] = "";
     char prev_name[MAX_NAME] = "";
 
@@ -73,8 +80,15 @@ int ini_parse_file(FILE* file,
     int lineno = 0;
     int error = 0;
 
+#if !INI_USE_STACK
+    line = (char*)malloc(INI_MAX_LINE);
+    if (!line) {
+        return -2;
+    }
+#endif
+
     /* Scan through file line by line */
-    while (fgets(line, sizeof(line), file) != NULL) {
+    while (fgets(line, INI_MAX_LINE, file) != NULL) {
         lineno++;
 
         start = line;
@@ -137,6 +151,10 @@ int ini_parse_file(FILE* file,
             }
         }
     }
+
+#if !INI_USE_STACK
+    free(line);
+#endif
 
     return error;
 }
