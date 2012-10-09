@@ -15,10 +15,10 @@ LDFLAGS = -g
 default: $(OUT)
 
 .cpp.o:
-    $(CCC) $(INCLUDES) $(CCFLAGS) $(EXTRACCFLAGS) -c $< -o $@
+	$(CCC) $(INCLUDES) $(CCFLAGS) $(EXTRACCFLAGS) -c $< -o $@
 
 $(OUT): $(OBJ)
-    ar rcs $(OUT) $(OBJ) $(EXTRAARFLAGS)
+	ar rcs $(OUT) $(OBJ) $(EXTRAARFLAGS)
 
 clean:
-    rm -f $(OBJ) $(OUT)
+	rm -f $(OBJ) $(OUT)
