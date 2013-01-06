@@ -43,4 +43,5 @@ multi_line.ini: e=0 user=105
 bad_multi.ini: e=1 user=105
 ... [bom_section]
 ... bom_name=bom_value;
+... key“=value“;
 bom.ini: e=0 user=107
