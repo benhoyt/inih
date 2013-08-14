@@ -32,6 +32,11 @@ public:
     // not found or not a valid integer (decimal "1234", "-1234", or hex "0x4d2").
     long GetInteger(std::string section, std::string name, long default_value);
 
+    // Get a real (floating point double) value from INI file, returning
+    // default_value if not found or not a valid floating point value
+    // according to strtod().
+    double GetReal(std::string section, std::string name, double default_value);
+
     // Get a boolean value from INI file, returning default_value if not found or if
     // not a valid true/false value. Valid true values are "true", "yes", "on", "1",
     // and valid false values are "false", "no", "off", "0" (not case sensitive).

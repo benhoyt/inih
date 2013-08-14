@@ -34,6 +34,15 @@ long INIReader::GetInteger(string section, string name, long default_value)
     return end > value ? n : default_value;
 }
 
+double INIReader::GetReal(string section, string name, double default_value)
+{
+    string valstr = Get(section, name, "");
+    const char* value = valstr.c_str();
+    char* end;
+    double n = strtod(value, &end);
+    return end > value ? n : default_value;
+}
+
 bool INIReader::GetBoolean(string section, string name, bool default_value)
 {
     string valstr = Get(section, name, "");
