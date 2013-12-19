@@ -60,6 +60,11 @@ int ini_parse_file(FILE* file,
 #define INI_USE_STACK 1
 #endif
 
+/* Stop parsing on first error (default is to keep parsing). */
+#ifndef INI_STOP_ON_FIRST_ERROR
+#define INI_STOP_ON_FIRST_ERROR 0
+#endif
+
 /* Maximum line length for any line in INI file. */
 #ifndef INI_MAX_LINE
 #define INI_MAX_LINE 200
