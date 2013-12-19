@@ -150,6 +150,11 @@ int ini_parse_file(FILE* file,
                 error = lineno;
             }
         }
+
+#if INI_STOP_ON_FIRST_ERROR
+        if (error)
+            break;
+#endif
     }
 
 #if !INI_USE_STACK
