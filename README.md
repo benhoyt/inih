@@ -92,3 +92,11 @@ This simple C++ API works fine, but it's not very fully-fledged. I'm not plannin
 
   * https://github.com/Blandinium/inih
   * https://github.com/OSSystems/inih
+
+
+## Differences from ConfigParser ##
+
+Some differences between inih and Python's [ConfigParser](http://docs.python.org/library/configparser.html) standard library module:
+
+* INI name=value pairs given above any section headers are treated as valid items with no section (section name is an empty string). In ConfigParser having no section is an error.
+* Line continuations are handled with leading whitespace on continued lines (like ConfigParser). However, instead of concatenating continued lines together, they are treated as separate values for the same key (unlike ConfigParser).
