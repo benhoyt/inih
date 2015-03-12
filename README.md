@@ -2,7 +2,7 @@
 
 To use it, just give `ini_parse()` an INI file, and it will call a callback for every `name=value` pair parsed, giving you strings for the section, name, and value. It's done this way because it works well on low-memory embedded systems, but also because it makes for a KISS implementation.
 
-[Download inih now](http://code.google.com/p/inih/downloads/list), browse [the source](http://code.google.com/p/inih/source/browse/trunk/ini.c), or read about [how to use inih in a DRY style](http://blog.brush.co.nz/2009/08/xmacros/) with X-Macros.
+Download a release, browse the source, or read about [how to use inih in a DRY style](http://blog.brush.co.nz/2009/08/xmacros/) with X-Macros.
 
 
 ## Compile-time options ##
@@ -16,7 +16,7 @@ To use it, just give `ini_parse()` an INI file, and it will call a callback for 
 
 ## Simple example in C ##
 
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 
 If you're into C++ and the STL, there is also an easy-to-use [INIReader class](http://code.google.com/p/inih/source/browse/trunk/cpp/INIReader.h) that stores values in a `map` and lets you `Get()` them:
 
-```
+```cpp
 #include <iostream>
 #include "INIReader.h"
 
