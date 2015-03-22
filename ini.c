@@ -3,7 +3,7 @@
 inih is released under the New BSD license (see LICENSE.txt). Go to the project
 home page for more info:
 
-http://code.google.com/p/inih/
+https://github.com/benhoyt/inih
 
 */
 
