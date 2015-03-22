@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
 ## C++ example ##
 
-If you're into C++ and the STL, there is also an easy-to-use [INIReader class](http://code.google.com/p/inih/source/browse/trunk/cpp/INIReader.h) that stores values in a `map` and lets you `Get()` them:
+If you're into C++ and the STL, there is also an easy-to-use [INIReader class](https://github.com/benhoyt/inih/blob/master/cpp/INIReader.h) that stores values in a `map` and lets you `Get()` them:
 
 ```cpp
 #include <iostream>
