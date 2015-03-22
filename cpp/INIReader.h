@@ -3,7 +3,7 @@
 // inih and INIReader are released under the New BSD license (see LICENSE.txt).
 // Go to the project home page for more info:
 //
-// http://code.google.com/p/inih/
+// https://github.com/benhoyt/inih
 
 #ifndef __INIREADER_H__
 #define __INIREADER_H__
