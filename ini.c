@@ -135,6 +135,7 @@ static char* ini_buffer_getln(char* str, int num, void* user)
         ctx->bytes_left--;
         ctx->ptr++;
     }
+    return str;
 }
 
 int ini_parse_buffer(const char* buf, int len,
