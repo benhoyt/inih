@@ -17,6 +17,14 @@ extern "C" {
 
 #include <stdio.h>
 
+typedef char* (*ini_getln_fn)(char* str, int num, void* user);
+
+typedef struct _ini_io
+{
+    void* user;
+    ini_getln_fn getln_fn;
+} ini_io;
+
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
    is "" if name=value pair parsed before any section heading. name:value
@@ -41,6 +49,14 @@ int ini_parse_file(FILE* file,
                    int (*handler)(void* user, const char* section,
                                   const char* name, const char* value),
                    void* user);
+
+int ini_parse_buffer(const char* buf, int len,
+                    int (*handler)(void*, const char*, const char*, const char*),
+                    void* user);
+
+int ini_parse_io(ini_io* ioctx,
+                 int (*handler)(void*, const char*, const char*, const char*),
+                 void* user);
 
 /* Nonzero to allow multi-line value parsing, in the style of Python's
    ConfigParser. If allowed, ini_parse() will call the handler with the same

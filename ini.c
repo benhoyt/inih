@@ -62,13 +62,100 @@ static char* strncpy0(char* dest, const char* src, size_t size)
     return dest;
 }
 
+static char* ini_fgets(char* str, int num, void* user)
+{
+    return fgets(str, num, (FILE*) user);
+}
+
 /* See documentation in header file. */
 int ini_parse_file(FILE* file,
                    int (*handler)(void*, const char*, const char*,
                                   const char*),
                    void* user)
 {
-    /* Uses a fair bit of stack (use heap instead if you need to) */
+    ini_io ioctx;
+    ioctx.getln_fn = ini_fgets;
+    ioctx.user = file;
+
+    return ini_parse_io(&ioctx, handler, user);
+}
+
+/* See documentation in header file. */
+int ini_parse(const char* filename,
+              int (*handler)(void*, const char*, const char*, const char*),
+              void* user)
+{
+    FILE* file;
+    int error;
+
+    file = fopen(filename, "r");
+    if (!file)
+        return -1;
+    error = ini_parse_file(file, handler, user);
+    fclose(file);
+    return error;
+}
+
+struct buffer_ctx
+{
+    const char* ptr;
+    int bytes_left;
+};
+
+static char* ini_buffer_getln(char* str, int num, void* user)
+{
+    struct buffer_ctx* ctx = (struct buffer_ctx*) user;
+    int idx = 0;
+    char newline = 0;
+
+    if (ctx->bytes_left <= 0)
+        return NULL;
+
+    for (idx = 0; idx < num - 1; ++idx)
+    {
+        if (idx == ctx->bytes_left)
+            break;
+
+        if (ctx->ptr[idx] == '\n')
+            newline = '\n';
+        else if (ctx->ptr[idx] == '\r')
+            newline = '\r';
+
+        if (newline)
+            break;
+    }
+
+    memcpy(str, ctx->ptr, idx);
+    str[idx] = 0;
+
+    ctx->ptr += idx + 1;
+    ctx->bytes_left -= idx + 1;
+
+    if (newline && ctx->bytes_left > 0 && ((newline == '\r' && ctx->ptr[0] == '\n') || (newline == '\n' && ctx->ptr[0] == '\r'))) {
+        ctx->bytes_left--;
+        ctx->ptr++;
+    }
+}
+
+int ini_parse_buffer(const char* buf, int len,
+                    int (*handler)(void*, const char*, const char*, const char*),
+                    void* user)
+{
+    struct buffer_ctx bctx;
+    bctx.bytes_left = len;
+    bctx.ptr = buf;
+    ini_io ioctx;
+    ioctx.getln_fn = ini_buffer_getln;
+    ioctx.user = &bctx;
+
+    return ini_parse_io(&ioctx, handler, user);
+}
+
+int ini_parse_io(ini_io* ioctx,
+                 int (*handler)(void*, const char*, const char*, const char*),
+                 void* user)
+{
+        /* Uses a fair bit of stack (use heap instead if you need to) */
 #if INI_USE_STACK
     char line[INI_MAX_LINE];
 #else
@@ -92,7 +179,7 @@ int ini_parse_file(FILE* file,
 #endif
 
     /* Scan through file line by line */
-    while (fgets(line, INI_MAX_LINE, file) != NULL) {
+    while ((ioctx->getln_fn(line, INI_MAX_LINE, ioctx->user)) != NULL) {
         lineno++;
 
         start = line;
@@ -165,21 +252,5 @@ int ini_parse_file(FILE* file,
     free(line);
 #endif
 
-    return error;
-}
-
-/* See documentation in header file. */
-int ini_parse(const char* filename,
-              int (*handler)(void*, const char*, const char*, const char*),
-              void* user)
-{
-    FILE* file;
-    int error;
-
-    file = fopen(filename, "r");
-    if (!file)
-        return -1;
-    error = ini_parse_file(file, handler, user);
-    fclose(file);
     return error;
 }
