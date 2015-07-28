@@ -17,6 +17,23 @@ extern "C" {
 
 #include <stdio.h>
 
+/* prototype of a generic getln function - its behaviour should match
+   that of fgets */
+
+typedef char* (*ini_getln_fn)(char* str, int num, void* user);
+
+/* structure representing an IO context which can be used to implement
+   custom IO for inih
+
+   user - pointer which will be passed to getln_fn on each call
+   getln_fn - custom function for reading lines from a IO source
+   */
+typedef struct _ini_io
+{
+    void* user;
+    ini_getln_fn getln_fn;
+} ini_io;
+
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
    is "" if name=value pair parsed before any section heading. name:value
@@ -41,6 +58,19 @@ int ini_parse_file(FILE* file,
                    int (*handler)(void* user, const char* section,
                                   const char* name, const char* value),
                    void* user);
+
+/* Same as ini_parse(), but takes a char buffer of given size. The buffer
+   is expected to contain a ini file */
+int ini_parse_buffer(const char* buf, int len,
+                    int (*handler)(void*, const char*, const char*, const char*),
+                    void* user);
+
+/* Instead of FILE* or memory buffer, the caller is expected to pass his/her
+   own IO handler. This can be used to implement reading from a source which
+   is neither a file nor buffer in memory (eg. network stream). */
+int ini_parse_io(ini_io* ioctx,
+                 int (*handler)(void*, const char*, const char*, const char*),
+                 void* user);
 
 /* Nonzero to allow multi-line value parsing, in the style of Python's
    ConfigParser. If allowed, ini_parse() will call the handler with the same
