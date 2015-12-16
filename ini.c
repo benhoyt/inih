@@ -130,8 +130,11 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
         else if (*start && *start != ';') {
             /* Not a comment, must be a name[=:]value pair */
             end = find_char_or_comment(start, '=');
-            if (*end != '=') {
-                end = find_char_or_comment(start, ':');
+            /* There may be a colon as well, use the first : or = found */
+            if (*(find_char_or_comment(start, ':')) == ':') {
+                if(*end != '=' || end > find_char_or_comment(start, ':')) {
+                    end = find_char_or_comment(start, ':');
+                }
             }
             if (*end == '=' || *end == ':') {
                 *end = '\0';
