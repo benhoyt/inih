@@ -11,6 +11,7 @@ Download a release, browse the source, or read about [how to use inih in a DRY s
 
   * **Multi-line entries:** By default, inih supports multi-line entries in the style of Python's ConfigParser. To disable, add `-DINI_ALLOW_MULTILINE=0`.
   * **UTF-8 BOM:** By default, inih allows a UTF-8 BOM sequence (0xEF 0xBB 0xBF) at the start of INI files. To disable, add `-DINI_ALLOW_BOM=0`.
+  * **Inline comments:** By default, inih allows inline comments with the `;` character. To disable, add `-DINI_ALLOW_INLINE_COMMENTS=0`. You can also specify which characters are allowed to start an inline comment using `INI_INLINE_COMMENT_PREFIXES`.
   * **Stack vs heap:** By default, inih allocates its line buffer on the stack. To allocate on the heap using `malloc` instead, specify `-DINI_USE_STACK=0`.
   * **Stop on first error:** By default, inih keeps parsing the rest of the file after an error. To stop parsing on the first error, add `-DINI_STOP_ON_FIRST_ERROR=1`.
   * **Maximum line length:** The default maximum line length is 200 bytes. To override this, add something like `-DINI_MAX_LINE=1000`.
