@@ -47,7 +47,7 @@ static char* lskip(const char* s)
 static char* find_char_or_comment(const char* s, char c)
 {
     int was_whitespace = 0;
-    while (*s && *s != c && !(was_whitespace && *s == ';')) {
+    while (*s && *s != c && !(was_whitespace && (*s == ';' || *s == '#'))) {
         was_whitespace = isspace((unsigned char)(*s));
         s++;
     }
@@ -127,7 +127,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 error = lineno;
             }
         }
-        else if (*start && *start != ';') {
+        else if (*start && (*start != ';' && *start != '#')) {
             /* Not a comment, must be a name[=:]value pair */
             end = find_char_or_comment(start, '=');
             if (*end != '=') {
@@ -138,7 +138,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 name = rstrip(start);
                 value = lskip(end + 1);
                 end = find_char_or_comment(value, '\0');
-                if (*end == ';')
+                if (*end == ';' || *end == '#')
                     *end = '\0';
                 rstrip(value);
 
