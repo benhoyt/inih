@@ -46,9 +46,9 @@ static char* lskip(const char* s)
    a whitespace character to register as a comment. */
 static char* find_chars_or_comment(const char* s, const char* chars)
 {
-    int was_whitespace = 0;
-    while (*s && (!chars || !strchr(chars, *s)) && !(was_whitespace && *s == ';')) {
-        was_whitespace = isspace((unsigned char)(*s));
+    int was_space = 0;
+    while (*s && (!chars || !strchr(chars, *s)) && !(was_space && *s == ';')) {
+        was_space = isspace((unsigned char)(*s));
         s++;
     }
     return (char*)s;
