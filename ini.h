@@ -67,7 +67,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #ifndef INI_ALLOW_INLINE_COMMENTS
 #define INI_ALLOW_INLINE_COMMENTS 1
 #endif
+#ifndef INI_INLINE_COMMENT_PREFIXES
 #define INI_INLINE_COMMENT_PREFIXES ";"
+#endif
 
 /* Nonzero to use stack, zero to use heap (malloc/free). */
 #ifndef INI_USE_STACK
