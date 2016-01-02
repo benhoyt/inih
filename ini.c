@@ -41,16 +41,23 @@ static char* lskip(const char* s)
     return (char*)s;
 }
 
-/* Return pointer to first char (of chars) or ';' comment in given string, or
-   pointer to null at end of string if neither found. ';' must be prefixed by
-   a whitespace character to register as a comment. */
+/* Return pointer to first char (of chars) or inline comment in given string,
+   or pointer to null at end of string if neither found. Inline comment must
+   be prefixed by a whitespace character to register as a comment. */
 static char* find_chars_or_comment(const char* s, const char* chars)
 {
+#if INI_ALLOW_INLINE_COMMENTS
     int was_space = 0;
-    while (*s && (!chars || !strchr(chars, *s)) && !(was_space && *s == ';')) {
+    while (*s && (!chars || !strchr(chars, *s)) &&
+           !(was_space && strchr(INI_INLINE_COMMENT_PREFIXES, *s))) {
         was_space = isspace((unsigned char)(*s));
         s++;
     }
+#else
+    while (*s && (!chars || !strchr(chars, *s))) {
+        s++;
+    }
+#endif
     return (char*)s;
 }
 
@@ -104,12 +111,13 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
         start = lskip(rstrip(start));
 
         if (*start == ';' || *start == '#') {
-            /* Per Python ConfigParser, allow '#' comments at start of line */
+            /* Per Python configparser, allow both ; and # comments at the
+               start of a line */
         }
 #if INI_ALLOW_MULTILINE
         else if (*prev_name && *start && start > line) {
-            /* Non-black line with leading whitespace, treat as continuation
-               of previous name's value (as per Python ConfigParser). */
+            /* Non-blank line with leading whitespace, treat as continuation
+               of previous name's value (as per Python configparser). */
             if (!handler(user, section, prev_name, start) && !error)
                 error = lineno;
         }
@@ -134,9 +142,11 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 *end = '\0';
                 name = rstrip(start);
                 value = lskip(end + 1);
+#if INI_ALLOW_INLINE_COMMENTS
                 end = find_chars_or_comment(value, NULL);
-                if (*end == ';')
+                if (*end)
                     *end = '\0';
+#endif
                 rstrip(value);
 
                 /* Valid name[=:]value pair found, call handler */

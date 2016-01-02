@@ -27,7 +27,7 @@ typedef char* (*ini_reader)(char* str, int num, void* stream);
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
    is "" if name=value pair parsed before any section heading. name:value
-   pairs are also supported as a concession to Python's ConfigParser.
+   pairs are also supported as a concession to Python's configparser.
 
    For each name=value pair parsed, call handler function with given user
    pointer as well as section, name, and value (data only valid for duration
@@ -49,7 +49,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                      void* user);
 
 /* Nonzero to allow multi-line value parsing, in the style of Python's
-   ConfigParser. If allowed, ini_parse() will call the handler with the same
+   configparser. If allowed, ini_parse() will call the handler with the same
    name for each subsequent line parsed. */
 #ifndef INI_ALLOW_MULTILINE
 #define INI_ALLOW_MULTILINE 1
@@ -60,6 +60,14 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #ifndef INI_ALLOW_BOM
 #define INI_ALLOW_BOM 1
 #endif
+
+/* Nonzero to allow inline comments (with valid inline comment characters
+   specified by INI_INLINE_COMMENT_PREFIXES). Set to 0 to turn off and match
+   Python 3.2+ configparser behaviour. */
+#ifndef INI_ALLOW_INLINE_COMMENTS
+#define INI_ALLOW_INLINE_COMMENTS 1
+#endif
+#define INI_INLINE_COMMENT_PREFIXES ";"
 
 /* Nonzero to use stack, zero to use heap (malloc/free). */
 #ifndef INI_USE_STACK
