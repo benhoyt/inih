@@ -41,13 +41,13 @@ static char* lskip(const char* s)
     return (char*)s;
 }
 
-/* Return pointer to first char c or ';' comment in given string, or pointer to
-   null at end of string if neither found. ';' must be prefixed by a whitespace
-   character to register as a comment. */
-static char* find_char_or_comment(const char* s, char c)
+/* Return pointer to first char (of chars) or ';' comment in given string, or
+   pointer to null at end of string if neither found. ';' must be prefixed by
+   a whitespace character to register as a comment. */
+static char* find_chars_or_comment(const char* s, const char* chars)
 {
     int was_whitespace = 0;
-    while (*s && *s != c && !(was_whitespace && *s == ';')) {
+    while (*s && (!chars || !strchr(chars, *s)) && !(was_whitespace && *s == ';')) {
         was_whitespace = isspace((unsigned char)(*s));
         s++;
     }
@@ -116,7 +116,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
         else if (*start == '[') {
             /* A "[section]" line */
-            end = find_char_or_comment(start + 1, ']');
+            end = find_chars_or_comment(start + 1, "]");
             if (*end == ']') {
                 *end = '\0';
                 strncpy0(section, start + 1, sizeof(section));
@@ -129,15 +129,12 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
         }
         else if (*start && *start != ';') {
             /* Not a comment, must be a name[=:]value pair */
-            end = find_char_or_comment(start, '=');
-            if (*end != '=') {
-                end = find_char_or_comment(start, ':');
-            }
+            end = find_chars_or_comment(start, "=:");
             if (*end == '=' || *end == ':') {
                 *end = '\0';
                 name = rstrip(start);
                 value = lskip(end + 1);
-                end = find_char_or_comment(value, '\0');
+                end = find_chars_or_comment(value, NULL);
                 if (*end == ';')
                     *end = '\0';
                 rstrip(value);

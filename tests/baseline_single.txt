@@ -14,6 +14,10 @@ no_file.ini: e=-1 user=0
 ... Content-Type=text/html;
 ... foo=bar;
 ... adams=42;
+... funny1=with = equals;
+... funny2=with : colons;
+... funny3=two = equals;
+... funny4=two : colons;
 normal.ini: e=0 user=101
 ... [section1]
 ... name1=value1;
