@@ -127,7 +127,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 error = lineno;
             }
         }
-        else if (*start && *start != ';') {
+        else if (*start) {
             /* Not a comment, must be a name[=:]value pair */
             end = find_chars_or_comment(start, "=:");
             if (*end == '=' || *end == ':') {
