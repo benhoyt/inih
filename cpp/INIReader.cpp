@@ -18,18 +18,18 @@ INIReader::INIReader(string filename)
     _error = ini_parse(filename.c_str(), ValueHandler, this);
 }
 
-int INIReader::ParseError()
+int INIReader::ParseError() const
 {
     return _error;
 }
 
-string INIReader::Get(string section, string name, string default_value)
+string INIReader::Get(string section, string name, string default_value) const
 {
     string key = MakeKey(section, name);
-    return _values.count(key) ? _values[key] : default_value;
+    return _values.count(key) ? _values.at(key) : default_value;
 }
 
-long INIReader::GetInteger(string section, string name, long default_value)
+long INIReader::GetInteger(string section, string name, long default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -39,7 +39,7 @@ long INIReader::GetInteger(string section, string name, long default_value)
     return end > value ? n : default_value;
 }
 
-double INIReader::GetReal(string section, string name, double default_value)
+double INIReader::GetReal(string section, string name, double default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -48,7 +48,7 @@ double INIReader::GetReal(string section, string name, double default_value)
     return end > value ? n : default_value;
 }
 
-bool INIReader::GetBoolean(string section, string name, bool default_value)
+bool INIReader::GetBoolean(string section, string name, bool default_value) const
 {
     string valstr = Get(section, name, "");
     // Convert to lower case to make string comparisons case-insensitive
