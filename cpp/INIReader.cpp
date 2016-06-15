@@ -26,7 +26,9 @@ int INIReader::ParseError() const
 string INIReader::Get(string section, string name, string default_value) const
 {
     string key = MakeKey(section, name);
-    return _values.count(key) ? _values.at(key) : default_value;
+    return _values.count(key) ? _values.at(key) : default_value; 
+    //Above statement used std::map::at method, which is not availalbe until c++11. Modify above sentence to below if using an older version of compiler:
+    //return _values.count(key) ? _values.find(key)->second : default_value;
 }
 
 long INIReader::GetInteger(string section, string name, long default_value) const
