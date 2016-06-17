@@ -26,7 +26,8 @@ int INIReader::ParseError() const
 string INIReader::Get(string section, string name, string default_value) const
 {
     string key = MakeKey(section, name);
-    return _values.count(key) ? _values.at(key) : default_value;
+    // Use _values.find() here instead of _values.at() to support pre C++11 compilers
+    return _values.count(key) ? _values.find(key)->second : default_value;
 }
 
 long INIReader::GetInteger(string section, string name, long default_value) const
