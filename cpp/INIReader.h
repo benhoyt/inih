@@ -25,7 +25,7 @@ public:
     int ParseError() const;
 
     // Get a string value from INI file, returning default_value if not found.
-    const std::string& Get(const std::string& section, const std::string& name,
+    std::string Get(const std::string& section, const std::string& name,
                     const std::string& default_value) const;
 
     // Get an integer (long) value from INI file, returning default_value if
