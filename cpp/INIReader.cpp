@@ -13,7 +13,7 @@
 
 using std::string;
 
-INIReader::INIReader(string filename)
+INIReader::INIReader(const string& filename)
 {
     _error = ini_parse(filename.c_str(), ValueHandler, this);
 }
@@ -23,14 +23,14 @@ int INIReader::ParseError() const
     return _error;
 }
 
-string INIReader::Get(string section, string name, string default_value) const
+string INIReader::Get(const string& section, const string& name, const string& default_value) const
 {
     string key = MakeKey(section, name);
     // Use _values.find() here instead of _values.at() to support pre C++11 compilers
     return _values.count(key) ? _values.find(key)->second : default_value;
 }
 
-long INIReader::GetInteger(string section, string name, long default_value) const
+long INIReader::GetInteger(const string& section, const string& name, long default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -40,7 +40,7 @@ long INIReader::GetInteger(string section, string name, long default_value) cons
     return end > value ? n : default_value;
 }
 
-double INIReader::GetReal(string section, string name, double default_value) const
+double INIReader::GetReal(const string& section, const string& name, double default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -49,7 +49,7 @@ double INIReader::GetReal(string section, string name, double default_value) con
     return end > value ? n : default_value;
 }
 
-bool INIReader::GetBoolean(string section, string name, bool default_value) const
+bool INIReader::GetBoolean(const string& section, const string& name, bool default_value) const
 {
     string valstr = Get(section, name, "");
     // Convert to lower case to make string comparisons case-insensitive
@@ -62,7 +62,7 @@ bool INIReader::GetBoolean(string section, string name, bool default_value) cons
         return default_value;
 }
 
-string INIReader::MakeKey(string section, string name)
+string INIReader::MakeKey(const string& section, const string& name)
 {
     string key = section + "=" + name;
     // Convert to lower case to make section/name lookups case-insensitive
