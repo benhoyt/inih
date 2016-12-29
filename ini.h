@@ -17,9 +17,20 @@ extern "C" {
 
 #include <stdio.h>
 
+/* Nonzero if ini_handler callback should accept lineno parameter. */
+#ifndef INI_HANDLER_LINENO
+#define INI_HANDLER_LINENO 0
+#endif
+
 /* Typedef for prototype of handler function. */
+#if INI_HANDLER_LINENO
+typedef int (*ini_handler)(void* user, const char* section,
+                           const char* name, const char* value,
+                           int lineno);
+#else
 typedef int (*ini_handler)(void* user, const char* section,
                            const char* name, const char* value);
+#endif
 
 /* Typedef for prototype of fgets-style reader function. */
 typedef char* (*ini_reader)(char* str, int num, void* stream);
