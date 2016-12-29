@@ -24,7 +24,7 @@ typedef int (*ini_handler)(void* user, const char* section,
 /* Typedef for prototype of handler function that reports lines */
 typedef int (*ini_handler_report_lines)(void* user, const char* section,
                                         const char* name, const char* value,
-					int line);
+                                        int line);
 
 
 /* Typedef for prototype of fgets-style reader function. */
