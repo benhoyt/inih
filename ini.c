@@ -70,8 +70,8 @@ static char* strncpy0(char* dest, const char* src, size_t size)
 }
 
 /* See documentation in header file. */
-int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
-                     void* user)
+int ini_parse_stream_report_lines(ini_reader reader, void* stream,
+                                  ini_handler_report_lines handler, void* user)
 {
     /* Uses a fair bit of stack (use heap instead if you need to) */
 #if INI_USE_STACK
@@ -118,7 +118,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
         else if (*prev_name && *start && start > line) {
             /* Non-blank line with leading whitespace, treat as continuation
                of previous name's value (as per Python configparser). */
-            if (!handler(user, section, prev_name, start) && !error)
+            if (!handler(user, section, prev_name, start, lineno) && !error)
                 error = lineno;
         }
 #endif
@@ -152,7 +152,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
                 /* Valid name[=:]value pair found, call handler */
                 strncpy0(prev_name, name, sizeof(prev_name));
-                if (!handler(user, section, name, value) && !error)
+                if (!handler(user, section, name, value, lineno) && !error)
                     error = lineno;
             }
             else if (!error) {
@@ -174,10 +174,43 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     return error;
 }
 
+struct curry {
+    void *payload;
+    ini_handler handler;
+};
+
+static int
+curry_handler(void* user, const char* section, const char* name,
+              const char* value, int line)
+{
+    ini_handler handler;
+    struct curry *env = user;
+
+    handler = env->handler;
+
+    return handler(env->payload, section, name, value);
+}
+
+int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
+                     void* user)
+{
+    struct curry env;
+
+    env.payload = user;
+    env.handler = handler;
+    return ini_parse_stream_report_lines(reader, stream, curry_handler, &env);
+}
+
+
 /* See documentation in header file. */
 int ini_parse_file(FILE* file, ini_handler handler, void* user)
 {
-    return ini_parse_stream((ini_reader)fgets, file, handler, user);
+    struct curry env;
+
+    env.payload = user;
+    env.handler = handler;
+    return ini_parse_stream_report_lines((ini_reader)fgets, file,
+                                          curry_handler, &env);
 }
 
 /* See documentation in header file. */
@@ -185,11 +218,44 @@ int ini_parse(const char* filename, ini_handler handler, void* user)
 {
     FILE* file;
     int error;
+    struct curry env;
 
     file = fopen(filename, "r");
     if (!file)
         return -1;
-    error = ini_parse_file(file, handler, user);
+
+    env.payload = user;
+    env.handler = handler;
+    error = ini_parse_stream_report_lines((ini_reader)fgets, file,
+                                          curry_handler, &env);
+
+    fclose(file);
+    return error;
+}
+
+/** Reporting line functions **/
+
+/* See documentation in header file. */
+int ini_parse_file_report_lines(FILE* file, ini_handler_report_lines handler,
+                                void* user)
+{
+    return ini_parse_stream_report_lines((ini_reader)fgets, file, handler,
+                                         user);
+}
+
+
+/* See documentation in header file. */
+int ini_parse_report_lines(const char* filename,
+                           ini_handler_report_lines handler, void* user)
+{
+    FILE* file;
+    int error;
+
+    file = fopen(filename, "r");
+    if (!file)
+        return -1;
+
+    error = ini_parse_file_report_lines(file, handler, user);
     fclose(file);
     return error;
 }
