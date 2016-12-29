@@ -21,6 +21,12 @@ extern "C" {
 typedef int (*ini_handler)(void* user, const char* section,
                            const char* name, const char* value);
 
+/* Typedef for prototype of handler function that reports lines */
+typedef int (*ini_handler_report_lines)(void* user, const char* section,
+                                        const char* name, const char* value,
+                                        int line);
+
+
 /* Typedef for prototype of fgets-style reader function. */
 typedef char* (*ini_reader)(char* str, int num, void* stream);
 
@@ -47,6 +53,15 @@ int ini_parse_file(FILE* file, ini_handler handler, void* user);
    filename. Used for implementing custom or string-based I/O. */
 int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                      void* user);
+
+/* Sames as above, but these function report the line number in each call to
+   handler. Also, instead of ini_handler now is ini_handler_report_lines */
+int ini_parse_stream_report_lines(ini_reader reader, void* stream,
+                                  ini_handler_report_lines handler, void*user);
+int ini_parse_file_report_lines(FILE* file, ini_handler_report_lines handler,
+                                void* user);
+int ini_parse_report_lines(const char* filename,
+                           ini_handler_report_lines handler, void* user);
 
 /* Nonzero to allow multi-line value parsing, in the style of Python's
    configparser. If allowed, ini_parse() will call the handler with the same
