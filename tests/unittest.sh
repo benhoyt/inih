@@ -19,3 +19,7 @@ rm -f unittest_stop_on_first_error
 gcc ../ini.c -DINI_HANDLER_LINENO=1 unittest.c -o unittest_handler_lineno
 ./unittest_handler_lineno > baseline_handler_lineno.txt
 rm -f unittest_handler_lineno
+
+gcc ../ini.c -DINI_MAX_LINE=20 unittest_string.c -o unittest_string
+./unittest_string > baseline_string.txt
+rm -f unittest_string

@@ -2,7 +2,7 @@
 
 To use it, just give `ini_parse()` an INI file, and it will call a callback for every `name=value` pair parsed, giving you strings for the section, name, and value. It's done this way ("SAX style") because it works well on low-memory embedded systems, but also because it makes for a KISS implementation.
 
-You can also call `ini_parse_file()` to parse directly from a `FILE*` object, or `ini_parse_stream()` to parse using a custom reader to implement string-based or other custom I/O ([see example code](https://github.com/benhoyt/inih/blob/master/examples/ini_buffer.c)).
+You can also call `ini_parse_file()` to parse directly from a `FILE*` object, `ini_parse_string()` to parse data from a string, or `ini_parse_stream()` to parse using a custom fgets-style reader function for custom I/O.
 
 Download a release, browse the source, or read about [how to use inih in a DRY style](http://blog.brush.co.nz/2009/08/xmacros/) with X-Macros.
 
