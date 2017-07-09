@@ -206,6 +206,22 @@ int ini_parse(const char* filename, ini_handler handler, void* user)
     return error;
 }
 
+/* See documentation in header file. */
+#if INI_ENABLE_UNICODE
+int ini_parse_unicode(const wchar_t* filename, ini_handler handler, void* user)
+{
+	FILE* file;
+	int error;
+
+	file = _wfopen(filename, L"r");
+	if (!file)
+		return -1;
+	error = ini_parse_file(file, handler, user);
+	fclose(file);
+	return error;
+}
+#endif
+
 /* An ini_reader function to read the next line from a string buffer. This
    is the fgets() equivalent used by ini_parse_string(). */
 static char* ini_reader_string(char* str, int num, void* stream) {
