@@ -49,6 +49,7 @@ typedef char* (*ini_reader)(char* str, int num, void* stream);
    error (only when INI_USE_STACK is zero).
 */
 int ini_parse(const char* filename, ini_handler handler, void* user);
+int ini_parse_unicode(const wchar_t* filename, ini_handler handler, void* user);
 
 /* Same as ini_parse(), but takes a FILE* instead of filename. This doesn't
    close the file when it's finished -- the caller must do that. */
