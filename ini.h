@@ -22,6 +22,11 @@ extern "C" {
 #define INI_HANDLER_LINENO 0
 #endif
 
+/* Nonzero to compile ini_parse_unicode, zero to skip */
+#ifndef INI_ENABLE_UNICODE
+#define INI_ENABLE_UNICODE 1
+#endif
+
 /* Typedef for prototype of handler function. */
 #if INI_HANDLER_LINENO
 typedef int (*ini_handler)(void* user, const char* section,
@@ -66,7 +71,9 @@ int ini_parse(const char* filename, ini_handler handler, void* user);
    This version of the function loads an INI-style file from a Unicode path;
    however the callback still uses ANSI style strings.
 */
+#if INI_ENABLE_UNICODE
 int ini_parse_unicode(const wchar_t* filename, ini_handler handler, void* user);
+#endif
 
 /* Same as ini_parse(), but takes a FILE* instead of filename. This doesn't
    close the file when it's finished -- the caller must do that. */
