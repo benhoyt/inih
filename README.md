@@ -16,6 +16,7 @@ Download a release, browse the source, or read about [how to use inih in a DRY s
   * **Stop on first error:** By default, inih keeps parsing the rest of the file after an error. To stop parsing on the first error, add `-DINI_STOP_ON_FIRST_ERROR=1`.
   * **Maximum line length:** The default maximum line length is 200 bytes. To override this, add something like `-DINI_MAX_LINE=1000`.
   * **Report line numbers:** By default, the `ini_handler` callback doesn't receive the line number as a parameter. If you need that, add `-DINI_HANDLER_LINENO=1`.
+  * **Unicode paths:** By default, the `ini_parse_unicode` function is compiled.  If your environment does not support the wchar_t type or the \_wfopen function, add `-DINI_ENABLE_UNICODE=0`.
 
 
 ## Simple example in C ##
