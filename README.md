@@ -104,3 +104,8 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 
 * INI name=value pairs given above any section headers are treated as valid items with no section (section name is an empty string). In ConfigParser having no section is an error.
 * Line continuations are handled with leading whitespace on continued lines (like ConfigParser). However, instead of concatenating continued lines together, they are treated as separate values for the same key (unlike ConfigParser).
+
+
+## Platform-specific notes ##
+
+* Windows/Win32 uses UTF-16 filenames natively, so to handle Unicode paths you need to call `_wfopen()` to open a file and then `ini_parse_file()` to parse it; inih does not include and `wchar_t` or Unicode handling.
