@@ -108,4 +108,4 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 
 ## Platform-specific notes ##
 
-* Windows/Win32 uses UTF-16 filenames natively, so to handle Unicode paths you need to call `_wfopen()` to open a file and then `ini_parse_file()` to parse it; inih does not include and `wchar_t` or Unicode handling.
+* Windows/Win32 uses UTF-16 filenames natively, so to handle Unicode paths you need to call `_wfopen()` to open a file and then `ini_parse_file()` to parse it; inih does not include `wchar_t` or Unicode handling.
