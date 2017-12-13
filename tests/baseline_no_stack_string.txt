@@ -1,0 +1,20 @@
+empty string: e=0 user=0
+... [section]
+... foo=bar;
+... bazz=buzz quxx;
+basic: e=0 user=101
+... [section]
+... hello=world;
+... forty_two=42;
+crlf: e=0 user=102
+... [sec]
+... foo=01234567890123456789;
+... bar=4321;
+long line: e=0 user=103
+... [sec]
+... foo=0123456789012bix=1234;
+long continued: e=0 user=104
+... [s]
+... a=1;
+... c=3;
+error: e=3 user=105
