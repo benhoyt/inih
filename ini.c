@@ -84,6 +84,12 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     char line[INI_MAX_LINE];
 #else
     char* line;
+    char* oldline;
+#endif
+#if INI_ALLOW_REALLOC
+    int maxlinelen = INI_INITIAL_ALLOC;
+#else
+    int maxlinelen = INI_MAX_LINE;
 #endif
     char section[MAX_SECTION] = "";
     char prev_name[MAX_NAME] = "";
@@ -94,13 +100,13 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     char* value;
     int lineno = 0;
     int error = 0;
-
 #if !INI_USE_STACK
-    line = (char*)malloc(INI_MAX_LINE);
+    line = (char*)malloc(maxlinelen * sizeof(char));
     if (!line) {
         return -2;
     }
 #endif
+
 
 #if INI_HANDLER_LINENO
 #define HANDLER(u, s, n, v) handler(u, s, n, v, lineno)
@@ -109,7 +115,27 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
 
     /* Scan through stream line by line */
-    while (reader(line, INI_MAX_LINE, stream) != NULL) {
+    while (reader(line, maxlinelen, stream) != NULL) {
+#if INI_ALLOW_REALLOC
+        /* line longer than linesize, so increase it and read again */
+        while((strlen(line) == maxlinelen - 1) && (line[maxlinelen-2] != '\n')) {
+/* in case not unlimited: */
+#if INI_MAX_LINE
+            if(2 * maxlinelen * sizeof(char) > INI_MAX_LINE){
+                break;
+            }
+#endif
+            maxlinelen *= 2;
+            oldline = line;
+            line = realloc(line, maxlinelen * sizeof(char));
+            if(line == NULL) {
+                free(oldline);
+                return -2;
+            }
+            reader(line + (maxlinelen/2 - 1), maxlinelen/2 + 1, stream);
+       }
+#endif
+        
         lineno++;
 
         start = line;
@@ -226,7 +252,6 @@ static char* ini_reader_string(char* str, int num, void* stream) {
             break;
         num--;
     }
-
     *strp = '\0';
     ctx->ptr = ctx_ptr;
     ctx->num_left = ctx_num_left;
