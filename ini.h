@@ -88,19 +88,33 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_INLINE_COMMENT_PREFIXES ";"
 #endif
 
-/* Nonzero to use stack, zero to use heap (malloc/free). */
+/* Nonzero to use stack for line buffer, zero to use heap (malloc/free). */
 #ifndef INI_USE_STACK
 #define INI_USE_STACK 1
+#endif
+
+/* Maximum line length for any line in INI file (stack or heap). Note that
+   this must be 3 more than the longest line (due to '\r', '\n', and '\0'). */
+#ifndef INI_MAX_LINE
+#define INI_MAX_LINE 200
+#endif
+
+/* Nonzero to allow heap line buffer to grow via realloc(), zero for a
+   fixed-size buffer of INI_MAX_LINE bytes. Only applies if INI_USE_STACK is
+   zero. */
+#ifndef INI_ALLOW_REALLOC
+#define INI_ALLOW_REALLOC 0
+#endif
+
+/* Initial size in bytes for heap line buffer. Only applies if INI_USE_STACK
+   is zero. */
+#ifndef INI_INITIAL_ALLOC
+#define INI_INITIAL_ALLOC 200
 #endif
 
 /* Stop parsing on first error (default is to keep parsing). */
 #ifndef INI_STOP_ON_FIRST_ERROR
 #define INI_STOP_ON_FIRST_ERROR 0
-#endif
-
-/* Maximum line length for any line in INI file. */
-#ifndef INI_MAX_LINE
-#define INI_MAX_LINE 200
 #endif
 
 #ifdef __cplusplus
