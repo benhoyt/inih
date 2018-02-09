@@ -78,6 +78,12 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_ALLOW_BOM 1
 #endif
 
+/* Chars that begin a start-of-line comment. Per Python configparser, allow
+   both ; and # comments at the start of a line by default. */
+#ifndef INI_START_COMMENT_PREFIXES
+#define INI_START_COMMENT_PREFIXES ";#"
+#endif
+
 /* Nonzero to allow inline comments (with valid inline comment characters
    specified by INI_INLINE_COMMENT_PREFIXES). Set to 0 to turn off and match
    Python 3.2+ configparser behaviour. */

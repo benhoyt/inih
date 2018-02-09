@@ -148,9 +148,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
         start = lskip(rstrip(start));
 
-        if (*start == ';' || *start == '#') {
-            /* Per Python configparser, allow both ; and # comments at the
-               start of a line */
+        if (strchr(INI_START_COMMENT_PREFIXES, *start)) {
+            /* Start-of-line comment */
         }
 #if INI_ALLOW_MULTILINE
         else if (*prev_name && *start && start > line) {
