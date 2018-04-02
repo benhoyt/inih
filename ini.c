@@ -192,9 +192,23 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 if (!HANDLER(user, section, name, value) && !error)
                     error = lineno;
             }
-            else if (!error) {
+            else {
                 /* No '=' or ':' found on name[=:]value line */
-                error = lineno;
+#if INI_ALLOW_NO_VALUE
+                name = start;
+                value = NULL;
+                *prev_name = '\0';
+                if (
+#if INI_ALLOW_MULTILINE
+                    /* Non-blank line with leading whitespace,
+                       but no previous name for continuation. */
+                    start > line ||
+#endif
+                    !HANDLER(user, section, name, value))
+#endif
+                if (!error) {
+                    error = lineno;
+                }
             }
         }
 
