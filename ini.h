@@ -78,6 +78,12 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_ALLOW_BOM 1
 #endif
 
+/* Nonzero to allow name without value, namely line contains no delimiter
+   [=:]. If allowed, value will be set to NULL for name without a value. */
+#ifndef INI_ALLOW_NO_VALUE
+#define INI_ALLOW_NO_VALUE 0
+#endif
+
 /* Chars that begin a start-of-line comment. Per Python configparser, allow
    both ; and # comments at the start of a line by default. */
 #ifndef INI_START_COMMENT_PREFIXES
