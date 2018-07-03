@@ -73,7 +73,7 @@ string INIReader::MakeKey(const string& section, const string& name)
 int INIReader::ValueHandler(void* user, const char* section, const char* name,
                             const char* value)
 {
-    INIReader* reader = (INIReader*)user;
+    INIReader *reader = static_cast<INIReader*>(user);
     string key = MakeKey(section, name);
     if (reader->_values[key].size() > 0)
         reader->_values[key] += "\n";
