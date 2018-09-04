@@ -62,6 +62,12 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return default_value;
 }
 
+bool HasValue(const std::string& section, const std::string& name) const
+{
+    string key = MakeKey(section, name);
+    return _values.count(key);
+}
+
 string INIReader::MakeKey(const string& section, const string& name)
 {
     string key = section + "=" + name;

@@ -42,6 +42,9 @@ public:
     // and valid false values are "false", "no", "off", "0" (not case sensitive).
     bool GetBoolean(const std::string& section, const std::string& name, bool default_value) const;
 
+    // Return true if a value exists with the given section and field names.
+    bool HasValue(const std::string& section, const std::string& name) const;
+
 private:
     int _error;
     std::map<std::string, std::string> _values;
