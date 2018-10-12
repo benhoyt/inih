@@ -27,6 +27,11 @@ public:
     // Get a string value from INI file, returning default_value if not found.
     std::string Get(const std::string& section, const std::string& name,
                     const std::string& default_value) const;
+    
+    // Get a string value from INI file, returning default_value if not found,
+    // empty, or contains only whitespace.
+    std::string GetString(const std::string& section, const std::string& name,
+                    const std::string& default_value) const;
 
     // Get an integer (long) value from INI file, returning default_value if
     // not found or not a valid integer (decimal "1234", "-1234", or hex "0x4d2").
