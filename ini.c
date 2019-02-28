@@ -100,6 +100,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     char* value;
     int lineno = 0;
     int error = 0;
+    int sectionno = 0;
 
 #if !INI_USE_STACK
     line = (char*)malloc(INI_INITIAL_ALLOC);
@@ -110,6 +111,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
 #if INI_HANDLER_LINENO
 #define HANDLER(u, s, n, v) handler(u, s, n, v, lineno)
+#elif INI_HANDLER_SECTIONNO
+#define HANDLER(u, s, n, v) handler(u, s, n, v, sectionno)
 #else
 #define HANDLER(u, s, n, v) handler(u, s, n, v)
 #endif
@@ -166,6 +169,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 *end = '\0';
                 strncpy0(section, start + 1, sizeof(section));
                 *prev_name = '\0';
+                sectionno++;
             }
             else if (!error) {
                 /* No ']' found on section line */

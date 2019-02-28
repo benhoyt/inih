@@ -27,6 +27,10 @@ extern "C" {
 typedef int (*ini_handler)(void* user, const char* section,
                            const char* name, const char* value,
                            int lineno);
+#elif INI_HANDLER_SECTIONNO
+typedef int (*ini_handler)(void* user, const char* section,
+                           const char* name, const char* value,
+                           int sectionno);
 #else
 typedef int (*ini_handler)(void* user, const char* section,
                            const char* name, const char* value);
