@@ -17,6 +17,10 @@
 // Read an INI file into easy-to-access name/value pairs. (Note that I've gone
 // for simplicity here rather than speed, but it should be pretty decent.)
 
+// this should be not necessary
+// in normal teams :)
+// #define DBJ_INI_READER_NOT_CASE_SENSITIVE
+
 namespace inih 
 {
 	using std::string;
