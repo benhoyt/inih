@@ -36,10 +36,6 @@ namespace inih {
 	{
 		string key(section.data()); key.append("="); key.append(name.data());
 
-#ifdef DBJ_INI_READER_NOT_CASE_SENSITIVE
-		// Convert to lower case to make section/name lookups case-insensitive
-		std::transform(key.begin(), key.end(), key.begin(), ::tolower);
-#endif		
 		return djb2_hash((unsigned char *)key.c_str());
 	}
 

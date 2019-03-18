@@ -21,10 +21,6 @@
 // string_view requires C++17
 #include <string_view>
 
-// dbj: checking for mixed case ini files should be not necessary
-// in normal teams :), but if it is for you uncomment this
-// #define DBJ_INI_READER_NOT_CASE_SENSITIVE
-
 namespace inih 
 {
 	using std::string_view;
