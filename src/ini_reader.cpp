@@ -9,15 +9,14 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
-#include "../ini.h"
-#include "ini_reader.h"
+#include "ini.h"
+#include "../inih.h"
 
 namespace inih {
 	using std::string;
 	using std::string_view;
 
 	// dbj
-	// string make_key(const string& section, const string& name) /*const*/
 	string make_key(string_view section, string_view name) /*const*/
 	{
 		string key(section.data()); key.append("="); key.append(name.data());
@@ -106,12 +105,9 @@ namespace inih {
 
 		private:
 			int _error;
+			// dbj: authors idea is:
+			// map key = ini section name + "=" + ini section key
 			std::map<std::string, std::string> _values;
-			/*
-			static std::string make_key(const std::string& section, const std::string& name);
-			static int ValueHandler(void* user, const char* section, const char* name,
-				const char* value);
-			*/
 	}; // ini_reader
 
 	I_ini_reader const & ini_reader_instance(string_view ini_file_name)

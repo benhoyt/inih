@@ -17,7 +17,7 @@
 // Read an INI file into easy-to-access name/value pairs. (Note that I've gone
 // for simplicity here rather than speed, but it should be pretty decent.)
 
-// this should be not necessary
+// dbj: this should be not necessary
 // in normal teams :)
 // #define DBJ_INI_READER_NOT_CASE_SENSITIVE
 
@@ -28,7 +28,7 @@ namespace inih
 
 	// dbj: we expose the interface and hide the implementation
 	// we implement this interface with a singleton
-	// since that is a singleton it keep itself in the memory
+	// since that is a singleton it keeps itself in the memory
 	// and thus it keeps it's data in the memory too
 	// the outcome is we do not need to use std::string for return values
 	// to keep them strings

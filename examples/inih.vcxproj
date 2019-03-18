@@ -110,16 +110,13 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\cpp\ini_reader.cpp" />
-    <ClCompile Include="..\ini.c" />
+    <ClCompile Include="..\src\ini.c" />
+    <ClCompile Include="..\src\ini_reader.cpp" />
     <ClCompile Include="ini_reader_example.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\cpp\ini_reader.h" />
-    <ClInclude Include="..\ini.h" />
+    <ClInclude Include="..\inih.h" />
+    <ClInclude Include="..\src\ini.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
