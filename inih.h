@@ -29,6 +29,11 @@ namespace inih
 {
 	using std::string_view;
 
+	// SEMantic VERsioning
+	constexpr inline const auto MAJOR = 1;
+	constexpr inline const auto MINOR = 0;
+	constexpr inline const auto PATCH = 0;
+
 	// dbj: we expose the interface and hide the implementation
 	// there is usually only one ini per one process
 	// we implement this interface with a singleton

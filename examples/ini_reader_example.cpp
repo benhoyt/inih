@@ -21,5 +21,15 @@ int main()
 		, reader.get_real("user", "pi", -1) 
 		, (reader.get_bool("user", "active", true) ? "true" : "false")
 	);
+
+	printf("\n\nList in the ini file:\n"
+		"\n[list]"
+		"\nkey = A"
+		"\nkey = B"
+		"\nkey = C"
+		"\n\nParsed as:\n%s",
+		reader.get("list","key", "null").get()
+	);
+
     return 0;
 }
