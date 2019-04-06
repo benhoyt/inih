@@ -9,3 +9,4 @@
 @call tcc ..\ini.c -I..\ -DINI_USE_STACK=0 -DINI_ALLOW_REALLOC=1 -DINI_INITIAL_ALLOC=5 -run unittest.c > baseline_heap_realloc.txt
 @call tcc ..\ini.c -I..\ -DINI_USE_STACK=0 -DINI_MAX_LINE=20 -DINI_ALLOW_REALLOC=1 -DINI_INITIAL_ALLOC=5 -run unittest.c > baseline_heap_realloc_max_line.txt
 @call tcc ..\ini.c -I..\ -DINI_USE_STACK=0 -DINI_MAX_LINE=20 -DINI_INITIAL_ALLOC=20 -run unittest.c > baseline_heap_string.txt
+@call tcc ..\ini.c -I..\ -DINI_CALL_HANDLER_ON_NEW_SECTION=1 -run unittest.c > baseline_call_handler_on_new_section.txt

@@ -49,3 +49,9 @@ bad_multi.ini: e=1 user=105
 ... bom_name=bom_value;
 ... key“=value“;
 bom.ini: e=0 user=107
+... [section1]
+... single1=abc;
+... single2=xyz;
+... single1=def;
+... single2=qrs;
+duplicate_sections.ini: e=0 user=108

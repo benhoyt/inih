@@ -47,3 +47,7 @@ rm -f unittest_heap_realloc_max_line
 gcc ../ini.c -DINI_USE_STACK=0 -DINI_MAX_LINE=20 -DINI_INITIAL_ALLOC=20 unittest_string.c -o unittest_heap_string
 ./unittest_heap_string > baseline_heap_string.txt
 rm -f unittest_heap_string
+
+gcc ../ini.c -DINI_CALL_HANDLER_ON_NEW_SECTION=1 unittest.c -o unittest_call_handler_on_new_section
+./unittest_call_handler_on_new_section > baseline_call_handler_on_new_section.txt
+rm -f unittest_call_handler_on_new_section
