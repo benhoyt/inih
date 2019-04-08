@@ -66,6 +66,6 @@ int main(void)
     parse("multi_line.ini");
     parse("bad_multi.ini");
     parse("bom.ini");
-	parse("duplicate_sections.ini");
+    parse("duplicate_sections.ini");
     return 0;
 }
