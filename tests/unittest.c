@@ -32,21 +32,18 @@ int dumper(void* user, const char* section, const char* name,
         strncpy(Prev_section, section, sizeof(Prev_section));
         Prev_section[sizeof(Prev_section) - 1] = '\0';
     }
+    if (!name) {
+        return 1;
+    }
 
 #if INI_HANDLER_LINENO
-	if(name) {
-		printf("... %s=%s;  line %d\n", name, value, lineno);
-	} else {
-		/* No name means that this was called for a section header */
-		printf("... ;  line %d\n", lineno);
-	}
+	printf("... %s=%s;  line %d\n", name, value, lineno);
+	
 #else
-	if(name) {
-		printf("... %s=%s;\n", name, value);
-	}
+	printf("... %s=%s;\n", name, value);
 #endif
 
-    return name && strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
+    return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
 }
 
 void parse(const char* fname) {
