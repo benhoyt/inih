@@ -22,7 +22,7 @@ You can control various aspects of inih using preprocessor defines:
 
   * **Stop on first error:** By default, inih keeps parsing the rest of the file after an error. To stop parsing on the first error, add `-DINI_STOP_ON_FIRST_ERROR=1`.
   * **Report line numbers:** By default, the `ini_handler` callback doesn't receive the line number as a parameter. If you need that, add `-DINI_HANDLER_LINENO=1`.
-  * **Detect section headers:** By default, inih is compatible with [ConfigParser's](http://docs.python.org/library/configparser.html), which does **not** provide a way to detect entering new sections. If you need to detect new sections (e.g., the ini file has multiple sections with the same name), then add `-DINI_CALL_HANDLER_ON_NEW_SECTION=1`. Your handler function will then be called each time a new section is encountered, with the section parameter set to the new section while name and value are set to NULL.
+  * **Call handler on new section:** By default, inih only calls the handler on each `name=value` pair. To detect new sections (e.g., the INI file has multiple sections with the same name), add `-DINI_CALL_HANDLER_ON_NEW_SECTION=1`. Your handler function will then be called each time a new section is encountered, with `section` set to the new section name but `name` and `value` set to NULL.
 
 ### Memory options ###
 
