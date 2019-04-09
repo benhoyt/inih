@@ -1,4 +1,4 @@
-TESTno_file.ini: e=-1 user=0
+TSTno_file.ini: e=-1 user=0
 ... [section1]
 ... one=This is a test;
 ... two=1234;
