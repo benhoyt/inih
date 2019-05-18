@@ -68,6 +68,14 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return default_value;
 }
 
+// Return true if the given section exists
+bool INIReader::HasSection(const std::string& section) const
+{
+    const string test = MakeKey(section, "");
+    return std::any_of(_values.begin(), _values.end,
+        [&](const std::pair<string, string>& k){return k.first.find(test) == 0;});
+}
+
 bool INIReader::HasValue(const std::string& section, const std::string& name) const
 {
     string key = MakeKey(section, name);
