@@ -71,12 +71,12 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
 // Return true if the given section exists
 bool INIReader::HasSection(const string& section) const
 {
-  const string key = MakeKey(section, "");
-  std::map<string, string>::const_iterator pos = _values.lower_bound(key);
-  if (pos == _values.end())
-      return false;
-  // Does the key at the lower_bound pos start with "section"?
-  return pos->first.compare(0, key.length(), key) == 0;
+    const string key = MakeKey(section, "");
+    std::map<string, string>::const_iterator pos = _values.lower_bound(key);
+    if (pos == _values.end())
+        return false;
+    // Does the key at the lower_bound pos start with "section"?
+    return pos->first.compare(0, key.length(), key) == 0;
 }
 
 bool INIReader::HasValue(const std::string& section, const std::string& name) const
