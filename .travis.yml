@@ -8,4 +8,6 @@ sudo: false
 script:
   - cd tests
   - ./unittest.sh
+  - cd ../examples
+  - ./cpptest.sh
   - git diff --exit-code

@@ -68,7 +68,6 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return default_value;
 }
 
-// Return true if the given section exists
 bool INIReader::HasSection(const string& section) const
 {
     const string key = MakeKey(section, "");
@@ -79,7 +78,7 @@ bool INIReader::HasSection(const string& section) const
     return pos->first.compare(0, key.length(), key) == 0;
 }
 
-bool INIReader::HasValue(const std::string& section, const std::string& name) const
+bool INIReader::HasValue(const string& section, const string& name) const
 {
     string key = MakeKey(section, name);
     return _values.count(key);
