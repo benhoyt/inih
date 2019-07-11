@@ -124,7 +124,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 max_line = INI_MAX_LINE;
             new_line = realloc(line, max_line);
             if (!new_line) {
+#if !INI_USE_STACK
                 free(line);
+#endif
                 return -2;
             }
             line = new_line;
