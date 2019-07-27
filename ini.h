@@ -1,5 +1,7 @@
 /* inih -- simple .INI file parser
 
+SPDX-License-Identifier: BSD-3-Clause
+
 Copyright (C) 2009-2019, Ben Hoyt
 
 inih is released under the New BSD license (see LICENSE.txt). Go to the project
