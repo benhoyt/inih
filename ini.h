@@ -127,6 +127,13 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_STOP_ON_FIRST_ERROR 0
 #endif
 
+/* Nonzero to call the handler at the start of each new section (with
+   name and value NULL). Default is to only call the handler on
+   each name=value pair. */
+#ifndef INI_CALL_HANDLER_ON_NEW_SECTION
+#define INI_CALL_HANDLER_ON_NEW_SECTION 0
+#endif
+
 #ifdef __cplusplus
 }
 #endif
