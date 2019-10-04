@@ -202,12 +202,14 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             }
             else if (!error) {
                 /* No '=' or ':' found on name[=:]value line */
-#if INI_ALLOW_KEY_WITHOUT_EQUAL
+#if INI_ALLOW_NO_VALUE
                 *end = '\0';
                 name = rstrip(start);
-                if (!HANDLER(user, section, name, NULL))
+                if (!HANDLER(user, section, name, NULL) && !error)
+                    error = lineno;
+#else
+                error = lineno;
 #endif
-			error = lineno;
             }
         }
 

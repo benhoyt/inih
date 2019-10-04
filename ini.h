@@ -134,11 +134,11 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_CALL_HANDLER_ON_NEW_SECTION 0
 #endif
 
-/* If a section contains a key without '=' or ':' signs, it would be not
-   passed to the handler. Setting the below to 1 will still call the handler
-   and explicitly set value to NULL. */
-#ifndef INI_ALLOW_KEY_WITHOUT_EQUAL
-#define INI_ALLOW_KEY_WITHOUT_EQUAL 0
+/* Nonzero to allow a name without a value (no '=' or ':' on the line) and
+   call the handler with value NULL in this case. Default is to treat
+   no-value lines as an error. */
+#ifndef INI_ALLOW_NO_VALUE
+#define INI_ALLOW_NO_VALUE 0
 #endif
 
 #ifdef __cplusplus
