@@ -37,17 +37,9 @@ int dumper(void* user, const char* section, const char* name,
     }
 
 #if INI_HANDLER_LINENO
-# if INI_ALLOW_NO_VALUE
     printf("... %s%s%s;  line %d\n", name, value ? "=" : "", value ? value : "", lineno);
-# else
-    printf("... %s=%s;  line %d\n", name, value, lineno);	
-# endif
 #else
-# if INI_ALLOW_NO_VALUE
     printf("... %s%s%s;\n", name, value ? "=" : "", value ? value : "");
-# else
-    printf("... %s=%s;\n", name, value);
-# endif
 #endif
 
     return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;

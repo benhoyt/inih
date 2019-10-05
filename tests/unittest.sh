@@ -52,6 +52,6 @@ gcc ../ini.c -DINI_CALL_HANDLER_ON_NEW_SECTION=1 unittest.c -o unittest_call_han
 ./unittest_call_handler_on_new_section > baseline_call_handler_on_new_section.txt
 rm -f unittest_call_handler_on_new_section
 
-gcc ../ini.c -DINI_ALLOW_NO_VALUE=1 unittest.c -o unittest_call_allow_no_value
-./unittest_call_allow_no_value > baseline_call_allow_no_value.txt
-rm -f unittest_call_allow_no_value
+gcc ../ini.c -DINI_ALLOW_NO_VALUE=1 unittest.c -o unittest_allow_no_value
+./unittest_allow_no_value > baseline_allow_no_value.txt
+rm -f unittest_allow_no_value
