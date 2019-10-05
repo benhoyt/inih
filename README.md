@@ -21,6 +21,7 @@ You can control various aspects of inih using preprocessor defines:
   * **UTF-8 BOM:** By default, inih allows a UTF-8 BOM sequence (0xEF 0xBB 0xBF) at the start of INI files. To disable, add `-DINI_ALLOW_BOM=0`.
   * **Inline comments:** By default, inih allows inline comments with the `;` character. To disable, add `-DINI_ALLOW_INLINE_COMMENTS=0`. You can also specify which character(s) start an inline comment using `INI_INLINE_COMMENT_PREFIXES`.
   * **Start-of-line comments:** By default, inih allows both `;` and `#` to start a comment at the beginning of a line. You can override this by changing `INI_START_COMMENT_PREFIXES`.
+  * **Allow no value:** By default, inih treats a name with no value (no `=` or `:` on the line) as an error. To allow names with no values, add `-DINI_ALLOW_NO_VALUE=1`, and inih will call your handler function with value set to `NULL`.
 
 ### Parsing options ###
 
