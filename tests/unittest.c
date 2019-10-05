@@ -37,9 +37,9 @@ int dumper(void* user, const char* section, const char* name,
     }
 
 #if INI_HANDLER_LINENO
-    printf("... %s=%s;  line %d\n", name, value, lineno);	
+    printf("... %s%s%s;  line %d\n", name, value ? "=" : "", value ? value : "", lineno);
 #else
-    printf("... %s=%s;\n", name, value);
+    printf("... %s%s%s;\n", name, value ? "=" : "", value ? value : "");
 #endif
 
     return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
@@ -66,5 +66,6 @@ int main(void)
     parse("bad_multi.ini");
     parse("bom.ini");
     parse("duplicate_sections.ini");
+    parse("no_value.ini");
     return 0;
 }

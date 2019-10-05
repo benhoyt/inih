@@ -57,3 +57,8 @@ bom.ini: e=0 user=107
 ... single1=def;  line 5
 ... single2=qrs;  line 6
 duplicate_sections.ini: e=0 user=108
+... [section0]
+... key0=val0;  line 6
+... [section1]
+... key1=val1;  line 9
+no_value.ini: e=2 user=109
