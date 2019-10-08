@@ -119,7 +119,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
 
     /* Scan through stream line by line */
-    while (reader(line, max_line, stream) != NULL) {
+    while (reader(line, (int)max_line, stream) != NULL) {
 #if INI_ALLOW_REALLOC && !INI_USE_STACK
         offset = strlen(line);
         while (offset == max_line - 1 && line[offset - 1] != '\n') {
@@ -132,7 +132,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 return -2;
             }
             line = new_line;
-            if (reader(line + offset, max_line - offset, stream) == NULL)
+            if (reader(line + offset, (int)(max_line - offset), stream) == NULL)
                 break;
             if (max_line >= INI_MAX_LINE)
                 break;

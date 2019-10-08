@@ -37,7 +37,7 @@ typedef int (*ini_handler)(void* user, const char* section,
 #endif
 
 /* Typedef for prototype of fgets-style reader function. */
-typedef char* (*ini_reader)(char* str, size_t num, void* stream);
+typedef char* (*ini_reader)(char* str, int num, void* stream);
 
 /* Parse given INI-style file. May have [section]s, name=value pairs
    (whitespace stripped), and comments starting with ';' (semicolon). Section
