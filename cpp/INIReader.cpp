@@ -109,6 +109,6 @@ int INIReader::ValueHandler(void* user, const char* section, const char* name,
     string key = MakeKey(section, name);
     if (reader->_values[key].size() > 0)
         reader->_values[key] += "\n";
-    reader->_values[key] += value;
+    reader->_values[key] += value ? value : "";
     return 1;
 }
