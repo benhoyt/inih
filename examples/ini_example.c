@@ -40,5 +40,9 @@ int main(int argc, char* argv[])
     }
     printf("Config loaded from 'test.ini': version=%d, name=%s, email=%s\n",
         config.version, config.name, config.email);
+
+    free((void*)config.name);
+    free((void*)config.email);
+
     return 0;
 }
