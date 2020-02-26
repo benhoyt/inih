@@ -131,7 +131,7 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 ## Meson notes ##
 
 * The `meson.build` file is intended to build libraries which can be installed on a system. This is not required to use or compile inih.
-* If you want to use inih for program which may be shipped in a distro, consider linking against the shared library. Meson adds entries for pkg-config (`inih` and `INIReader`).
+* If you want to use inih for programs which may be shipped in a distro, consider linking against the shared library. Meson adds entries for pkg-config (`inih` and `INIReader`).
 * In case you use inih as a subproject, you can use the `inih_dep` and `INIReader_dep` dependency variables.
 
 ## Related links ##
