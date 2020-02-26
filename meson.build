@@ -24,12 +24,14 @@ pkg.generate(lib_inih,
     version : meson.project_version()
 )
 
+inih_dep = declare_dependency(link_with : lib_inih)
+
 #### INIReader ####
 install_headers('cpp/INIReader.h')
 
 lib_INIReader = library('INIReader',
     ['cpp/INIReader.cpp', 'cpp/INIReader.h'],
-    dependencies : declare_dependency(link_with : lib_inih),
+    dependencies : inih_dep,
     install : true,
     version : meson.project_version(),
     soversion : '1'
@@ -40,3 +42,5 @@ pkg.generate(lib_INIReader,
     description : 'simple .INI file parser for C++',
     version : meson.project_version()
 )
+
+INIReader_dep = declare_dependency(link_with : lib_inih)
