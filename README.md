@@ -128,6 +128,12 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 
 * Windows/Win32 uses UTF-16 filenames natively, so to handle Unicode paths you need to call `_wfopen()` to open a file and then `ini_parse_file()` to parse it; inih does not include `wchar_t` or Unicode handling.
 
+## Meson notes ##
+
+* The `meson.build` file is intended to build libraries which can be installed on a system. This is not required to use or compile inih.
+* If you want to use inih for programs which may be shipped in a distro, consider linking against the shared library. Meson adds entries for pkg-config (`inih` and `INIReader`).
+* In case you use inih as a subproject, you can use the `inih_dep` and `INIReader_dep` dependency variables.
+
 ## Related links ##
 
 * [Conan package for inih](https://github.com/mohamedghita/conan-inih) (Conan is a C/C++ package manager)
