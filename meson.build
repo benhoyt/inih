@@ -11,8 +11,11 @@ pkg = import('pkgconfig')
 #### inih ####
 install_headers('ini.h')
 
+inc_inih = include_directories('.')
+
 lib_inih = library('inih',
-    ['ini.c', 'ini.h'],
+    ['ini.c'],
+    include_directories : inc_inih,
     install : true,
     version : meson.project_version(),
     soversion : '1'
@@ -24,13 +27,19 @@ pkg.generate(lib_inih,
     version : meson.project_version()
 )
 
-inih_dep = declare_dependency(link_with : lib_inih)
+inih_dep = declare_dependency(
+    link_with : lib_inih,
+    include_directories : inc_inih
+)
 
 #### INIReader ####
 install_headers('cpp/INIReader.h')
 
+inc_INIReader = include_directories('cpp')
+
 lib_INIReader = library('INIReader',
-    ['cpp/INIReader.cpp', 'cpp/INIReader.h'],
+    ['cpp/INIReader.cpp'],
+    include_directories : inc_INIReader,
     dependencies : inih_dep,
     install : true,
     version : meson.project_version(),
@@ -43,4 +52,7 @@ pkg.generate(lib_INIReader,
     version : meson.project_version()
 )
 
-INIReader_dep = declare_dependency(link_with : lib_inih)
+INIReader_dep = declare_dependency(
+    link_with : lib_inih,
+    include_directories : inc_INIReader
+)
