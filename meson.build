@@ -3,7 +3,7 @@ project('inih',
     meson_version : '>= 0.46.0',
     default_options : ['default_library=both'],
     license : 'BSD-3-Clause',
-    version : '47'
+    version : '48'
 )
 
 pkg = import('pkgconfig')
@@ -18,7 +18,7 @@ lib_inih = library('inih',
     include_directories : inc_inih,
     install : true,
     version : meson.project_version(),
-    soversion : '1'
+    soversion : '0'
 )
 
 pkg.generate(lib_inih,
@@ -43,7 +43,7 @@ lib_INIReader = library('INIReader',
     dependencies : inih_dep,
     install : true,
     version : meson.project_version(),
-    soversion : '1'
+    soversion : '0'
 )
 
 pkg.generate(lib_INIReader,
