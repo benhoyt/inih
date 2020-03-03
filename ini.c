@@ -16,17 +16,33 @@ https://github.com/benhoyt/inih
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
 #include "ini.h"
 
-#if !INI_USE_STACK
-#include <stdlib.h>
-#endif
-
 #define MAX_SECTION 50
 #define MAX_NAME 50
+
+#ifndef INI_RUNTIME_OPTIONS
+#define STATIC static const
+#else
+#define STATIC
+#endif
+
+STATIC bool ini_allow_multiline = INI_ALLOW_MULTILINE;
+STATIC bool ini_allow_bom = INI_ALLOW_BOM;
+STATIC char* ini_start_comment_prefixes = INI_START_COMMENT_PREFIXES;
+STATIC bool ini_allow_inline_comments = INI_ALLOW_INLINE_COMMENTS;
+STATIC char* ini_inline_comment_prefixes = INI_INLINE_COMMENT_PREFIXES;
+STATIC bool ini_use_stack = INI_USE_STACK;
+STATIC int ini_max_line = INI_MAX_LINE;
+STATIC bool ini_allow_realloc = INI_ALLOW_REALLOC;
+STATIC int ini_initial_alloc = INI_INITIAL_ALLOC;
+STATIC bool ini_stop_on_first_error = INI_STOP_ON_FIRST_ERROR;
+STATIC bool ini_call_handler_on_new_section = false;
+STATIC bool ini_allow_no_value = INI_ALLOW_NO_VALUE;
 
 /* Used by ini_parse_string() to keep track of string parsing state. */
 typedef struct {
@@ -56,18 +72,18 @@ static char* lskip(const char* s)
    be prefixed by a whitespace character to register as a comment. */
 static char* find_chars_or_comment(const char* s, const char* chars)
 {
-#if INI_ALLOW_INLINE_COMMENTS
-    int was_space = 0;
-    while (*s && (!chars || !strchr(chars, *s)) &&
-           !(was_space && strchr(INI_INLINE_COMMENT_PREFIXES, *s))) {
-        was_space = isspace((unsigned char)(*s));
-        s++;
+    if (ini_allow_inline_comments) {
+        int was_space = 0;
+        while (*s && (!chars || !strchr(chars, *s)) &&
+               !(was_space && strchr(ini_inline_comment_prefixes, *s))) {
+            was_space = isspace((unsigned char)(*s));
+            s++;
+        }
+    } else {
+        while (*s && (!chars || !strchr(chars, *s))) {
+            s++;
+        }
     }
-#else
-    while (*s && (!chars || !strchr(chars, *s))) {
-        s++;
-    }
-#endif
     return (char*)s;
 }
 
@@ -84,17 +100,17 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                      void* user)
 {
     /* Uses a fair bit of stack (use heap instead if you need to) */
-#if INI_USE_STACK
-    char line[INI_MAX_LINE];
-    int max_line = INI_MAX_LINE;
-#else
+    char line_buf[ini_use_stack ? ini_max_line : 0];
     char* line;
-    size_t max_line = INI_INITIAL_ALLOC;
-#endif
-#if INI_ALLOW_REALLOC && !INI_USE_STACK
+    size_t max_line;
+    if (ini_use_stack) {
+        line = line_buf;
+        max_line = ini_max_line;
+    } else {
+        max_line = ini_initial_alloc;
+    }
     char* new_line;
     size_t offset;
-#endif
     char section[MAX_SECTION] = "";
     char prev_name[MAX_NAME] = "";
 
@@ -105,12 +121,12 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     int lineno = 0;
     int error = 0;
 
-#if !INI_USE_STACK
-    line = (char*)malloc(INI_INITIAL_ALLOC);
-    if (!line) {
-        return -2;
+    if (!ini_use_stack) {
+        line = (char*)malloc(ini_initial_alloc);
+        if (!line) {
+            return -2;
+        }
     }
-#endif
 
 #if INI_HANDLER_LINENO
 #define HANDLER(u, s, n, v) handler(u, s, n, v, lineno)
@@ -120,49 +136,45 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
     /* Scan through stream line by line */
     while (reader(line, (int)max_line, stream) != NULL) {
-#if INI_ALLOW_REALLOC && !INI_USE_STACK
-        offset = strlen(line);
-        while (offset == max_line - 1 && line[offset - 1] != '\n') {
-            max_line *= 2;
-            if (max_line > INI_MAX_LINE)
-                max_line = INI_MAX_LINE;
-            new_line = realloc(line, max_line);
-            if (!new_line) {
-                free(line);
-                return -2;
+        if (ini_allow_realloc && !ini_use_stack) {
+            offset = strlen(line);
+            while (offset == max_line - 1 && line[offset - 1] != '\n') {
+                max_line *= 2;
+                if (max_line > ini_max_line)
+                    max_line = ini_max_line;
+                new_line = realloc(line, max_line);
+                if (!new_line) {
+                    free(line);
+                    return -2;
+                }
+                line = new_line;
+                if (reader(line + offset, (int)(max_line - offset), stream) == NULL)
+                    break;
+                if (max_line >= ini_max_line)
+                    break;
+                offset += strlen(line + offset);
             }
-            line = new_line;
-            if (reader(line + offset, (int)(max_line - offset), stream) == NULL)
-                break;
-            if (max_line >= INI_MAX_LINE)
-                break;
-            offset += strlen(line + offset);
         }
-#endif
 
         lineno++;
 
         start = line;
-#if INI_ALLOW_BOM
-        if (lineno == 1 && (unsigned char)start[0] == 0xEF &&
+        if (ini_allow_bom && lineno == 1 && (unsigned char)start[0] == 0xEF &&
                            (unsigned char)start[1] == 0xBB &&
                            (unsigned char)start[2] == 0xBF) {
             start += 3;
         }
-#endif
         start = lskip(rstrip(start));
 
-        if (strchr(INI_START_COMMENT_PREFIXES, *start)) {
+        if (strchr(ini_start_comment_prefixes, *start)) {
             /* Start-of-line comment */
         }
-#if INI_ALLOW_MULTILINE
-        else if (*prev_name && *start && start > line) {
+        else if (ini_allow_multiline && *prev_name && *start && start > line) {
             /* Non-blank line with leading whitespace, treat as continuation
                of previous name's value (as per Python configparser). */
             if (!HANDLER(user, section, prev_name, start) && !error)
                 error = lineno;
         }
-#endif
         else if (*start == '[') {
             /* A "[section]" line */
             end = find_chars_or_comment(start + 1, "]");
@@ -170,10 +182,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 *end = '\0';
                 strncpy0(section, start + 1, sizeof(section));
                 *prev_name = '\0';
-#if INI_CALL_HANDLER_ON_NEW_SECTION
-                if (!HANDLER(user, section, NULL, NULL) && !error)
+                if (ini_call_handler_on_new_section && !HANDLER(user, section, NULL, NULL) && !error)
                     error = lineno;
-#endif
             }
             else if (!error) {
                 /* No ']' found on section line */
@@ -187,11 +197,11 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 *end = '\0';
                 name = rstrip(start);
                 value = end + 1;
-#if INI_ALLOW_INLINE_COMMENTS
-                end = find_chars_or_comment(value, NULL);
-                if (*end)
-                    *end = '\0';
-#endif
+                if (ini_allow_inline_comments) {
+                    end = find_chars_or_comment(value, NULL);
+                    if (*end)
+                        *end = '\0';
+                }
                 value = lskip(value);
                 rstrip(value);
 
@@ -202,26 +212,24 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             }
             else if (!error) {
                 /* No '=' or ':' found on name[=:]value line */
-#if INI_ALLOW_NO_VALUE
-                *end = '\0';
-                name = rstrip(start);
-                if (!HANDLER(user, section, name, NULL) && !error)
+                if (ini_allow_no_value) {
+                    *end = '\0';
+                    name = rstrip(start);
+                    if (!HANDLER(user, section, name, NULL) && !error)
+                        error = lineno;
+                } else {
                     error = lineno;
-#else
-                error = lineno;
-#endif
+                }
             }
         }
 
-#if INI_STOP_ON_FIRST_ERROR
-        if (error)
+        if (ini_stop_on_first_error && error)
             break;
-#endif
     }
 
-#if !INI_USE_STACK
-    free(line);
-#endif
+    if (!ini_use_stack) {
+        free(line);
+    }
 
     return error;
 }

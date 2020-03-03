@@ -16,6 +16,7 @@ inc_inih = include_directories('.')
 lib_inih = library('inih',
     ['ini.c'],
     include_directories : inc_inih,
+    c_args : '-DINI_RUNTIME_OPTIONS',
     install : true,
     version : meson.project_version(),
     soversion : '0'

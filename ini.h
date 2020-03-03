@@ -20,6 +20,12 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdbool.h>
+
+/* Enable runtime options */
+#ifdef INI_RUNTIME_OPTIONS
+#define INI_HANDLER_LINENO 1
+#endif
 
 /* Nonzero if ini_handler callback should accept lineno parameter. */
 #ifndef INI_HANDLER_LINENO
@@ -75,17 +81,26 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #ifndef INI_ALLOW_MULTILINE
 #define INI_ALLOW_MULTILINE 1
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_allow_multiline;
+#endif
 
 /* Nonzero to allow a UTF-8 BOM sequence (0xEF 0xBB 0xBF) at the start of
    the file. See https://github.com/benhoyt/inih/issues/21 */
 #ifndef INI_ALLOW_BOM
 #define INI_ALLOW_BOM 1
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_allow_bom;
+#endif
 
 /* Chars that begin a start-of-line comment. Per Python configparser, allow
    both ; and # comments at the start of a line by default. */
 #ifndef INI_START_COMMENT_PREFIXES
 #define INI_START_COMMENT_PREFIXES ";#"
+#endif
+#ifdef INI_RUNTIME_OPTIONS
+extern char* ini_start_comment_prefixes;
 #endif
 
 /* Nonzero to allow inline comments (with valid inline comment characters
@@ -94,19 +109,31 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #ifndef INI_ALLOW_INLINE_COMMENTS
 #define INI_ALLOW_INLINE_COMMENTS 1
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_allow_inline_comments;
+#endif
 #ifndef INI_INLINE_COMMENT_PREFIXES
 #define INI_INLINE_COMMENT_PREFIXES ";"
+#endif
+#ifdef INI_RUNTIME_OPTIONS
+extern char* ini_inline_comment_prefixes;
 #endif
 
 /* Nonzero to use stack for line buffer, zero to use heap (malloc/free). */
 #ifndef INI_USE_STACK
 #define INI_USE_STACK 1
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_use_stack;
+#endif
 
 /* Maximum line length for any line in INI file (stack or heap). Note that
    this must be 3 more than the longest line (due to '\r', '\n', and '\0'). */
 #ifndef INI_MAX_LINE
 #define INI_MAX_LINE 200
+#endif
+#ifdef INI_RUNTIME_OPTIONS
+extern int ini_max_line;
 #endif
 
 /* Nonzero to allow heap line buffer to grow via realloc(), zero for a
@@ -115,16 +142,25 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #ifndef INI_ALLOW_REALLOC
 #define INI_ALLOW_REALLOC 0
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_allow_realloc;
+#endif
 
 /* Initial size in bytes for heap line buffer. Only applies if INI_USE_STACK
    is zero. */
 #ifndef INI_INITIAL_ALLOC
 #define INI_INITIAL_ALLOC 200
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern int ini_initial_alloc;
+#endif
 
 /* Stop parsing on first error (default is to keep parsing). */
 #ifndef INI_STOP_ON_FIRST_ERROR
 #define INI_STOP_ON_FIRST_ERROR 0
+#endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_stop_on_first_error;
 #endif
 
 /* Nonzero to call the handler at the start of each new section (with
@@ -133,6 +169,9 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #ifndef INI_CALL_HANDLER_ON_NEW_SECTION
 #define INI_CALL_HANDLER_ON_NEW_SECTION 0
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_call_handler_on_new_section;
+#endif
 
 /* Nonzero to allow a name without a value (no '=' or ':' on the line) and
    call the handler with value NULL in this case. Default is to treat
@@ -140,6 +179,11 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #ifndef INI_ALLOW_NO_VALUE
 #define INI_ALLOW_NO_VALUE 0
 #endif
+#ifdef INI_RUNTIME_OPTIONS
+extern bool ini_allow_no_value;
+#endif
+
+#undef extern
 
 #ifdef __cplusplus
 }
