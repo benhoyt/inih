@@ -134,6 +134,19 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 * If you want to use inih for programs which may be shipped in a distro, consider linking against the shared library. Meson adds entries for pkg-config (`inih` and `INIReader`).
 * In case you use inih as a subproject, you can use the `inih_dep` and `INIReader_dep` dependency variables.
 
+## Building from vcpkg ##
+
+You can build and install inih using [vcpkg](https://github.com/microsoft/vcpkg/) dependency manager:
+
+    git clone https://github.com/Microsoft/vcpkg.git
+    cd vcpkg
+    ./bootstrap-vcpkg.sh
+    ./vcpkg integrate install
+    ./vcpkg install inih
+
+The inih port in vcpkg is kept up to date by microsoft team members and community contributors.
+If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
+
 ## Related links ##
 
 * [Conan package for inih](https://github.com/mohamedghita/conan-inih) (Conan is a C/C++ package manager)
