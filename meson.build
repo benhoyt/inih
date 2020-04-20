@@ -2,7 +2,7 @@ project('inih',
     ['c','cpp'],
     default_options : ['default_library=static'],
     license : 'BSD-3-Clause',
-    version : '48'
+    version : '49'
 )
 
 #### options ####
