@@ -53,6 +53,6 @@ pkg.generate(lib_INIReader,
 )
 
 INIReader_dep = declare_dependency(
-    link_with : lib_inih,
+    link_with : lib_INIReader,
     include_directories : inc_INIReader
 )
