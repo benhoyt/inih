@@ -130,8 +130,13 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 
 ## Meson notes ##
 
-* The `meson.build` file is intended to build libraries which can be installed on a system. This is not required to use or compile inih.
-* If you want to use inih for programs which may be shipped in a distro, consider linking against the shared library. Meson adds entries for pkg-config (`inih` and `INIReader`).
+* The `meson.build` file is not required to use or compile inih, its main purpose is for distributions.
+* By default Meson only creates a static library for inih, but Meson can be used to configure this behavior:
+* with `-Ddefault_library=shared` a shared library is build.
+* with `-Ddistro_install=true` the library will be installed with the header and a pkg-config entry, you may want to set `-Ddefault_library=shared` when using this.
+* with `-Dwith_INIReader` you can build (and install if selected) the C++ library.
+* all compile-time options are implemented in Meson as well, you can take a look at [meson_options.txt](https://github.com/benhoyt/inih/blob/master/meson_options.txt) for their definition. These won't work if `distro_install` is set to `true`.
+* If you want to use inih for programs which may be shipped in a distro, consider linking against the shared libraries. The pkg-config entries are `inih` and `INIReader`.
 * In case you use inih as a subproject, you can use the `inih_dep` and `INIReader_dep` dependency variables.
 
 ## Building from vcpkg ##
