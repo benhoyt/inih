@@ -73,12 +73,11 @@ static char* find_chars_or_comment(const char* s, const char* chars)
 }
 
 /* Version of strncpy that ensures dest (size bytes) is null-terminated. */
-static char* strncpy0(char* dest, const char* src, size_t size)
+static inline void strncpy0(char* dest, size_t dsize, const char* src, size_t size)
 {
-    /* Use memcpy instead of strncpy to avoid gcc warnings (see issue #91) */
-    memcpy(dest, src, size - 1);
-    dest[size - 1] = '\0';
-    return dest;
+    size_t len = dsize - 1 < size ? dsize - 1 : size;
+    memcpy(dest, src, len);
+    dest[len] = '\0';
 }
 
 /* See documentation in header file. */
@@ -172,8 +171,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             /* A "[section]" line */
             end = find_chars_or_comment(start + 1, "]");
             if (*end == ']') {
-                *end = '\0';
-                strncpy0(section, start + 1, sizeof(section));
+                strncpy0(section, sizeof(section), start + 1, (size_t)(end - (start + 1)));
 #if INI_ALLOW_MULTILINE
                 *prev_name = '\0';
 #endif
@@ -191,9 +189,10 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             /* Not a comment, must be a name[=:]value pair */
             end = find_chars_or_comment(start, "=:");
             if (*end == '=' || *end == ':') {
+                unsigned nlen;
                 unsigned len;
                 *end = '\0';
-                rstrip(start);
+                nlen = rstrip(start);
                 name = start;
                 value = end + 1;
 #if INI_ALLOW_INLINE_COMMENTS
@@ -220,7 +219,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
                 /* Valid name[=:]value pair found, call handler */
 #if INI_ALLOW_MULTILINE
-                strncpy0(prev_name, name, sizeof(prev_name));
+                strncpy0(prev_name, sizeof(prev_name), name, nlen);
+#else
+                (void)nlen;
 #endif
                 if (!HANDLER(user, section, name, value) && !error)
                     error = lineno;
