@@ -34,13 +34,14 @@ typedef struct {
     size_t num_left;
 } ini_parse_string_ctx;
 
-/* Strip whitespace chars off end of given string, in place. Return s. */
-static char* rstrip(char* s)
+/* Strip whitespace chars off end of given string, in place. Return length. */
+static unsigned rstrip(char* s)
 {
     char* p = s + strlen(s);
-    while (p > s && isspace((unsigned char)(*--p)))
-        *p = '\0';
-    return s;
+    while (p > s && isspace((unsigned char)(p[-1])))
+        --p;
+    *p = '\0';
+    return (unsigned)(p - s);
 }
 
 /* Return pointer to first non-whitespace char in given string. */
@@ -153,7 +154,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             start += 3;
         }
 #endif
-        start = lskip(rstrip(start));
+        rstrip(start);
+        start = lskip(start);
 
         if (strchr(INI_START_COMMENT_PREFIXES, *start)) {
             /* Start-of-line comment */
@@ -189,8 +191,10 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             /* Not a comment, must be a name[=:]value pair */
             end = find_chars_or_comment(start, "=:");
             if (*end == '=' || *end == ':') {
+                unsigned len;
                 *end = '\0';
-                name = rstrip(start);
+                rstrip(start);
+                name = start;
                 value = end + 1;
 #if INI_ALLOW_INLINE_COMMENTS
                 end = find_chars_or_comment(value, NULL);
@@ -198,8 +202,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                     *end = '\0';
 #endif
                 value = lskip(value);
-                rstrip(value);
-
+                len = rstrip(value);
+                (void)len;
                 /* Valid name[=:]value pair found, call handler */
 #if INI_ALLOW_MULTILINE
                 strncpy0(prev_name, name, sizeof(prev_name));
@@ -211,7 +215,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 /* No '=' or ':' found on name[=:]value line */
 #if INI_ALLOW_NO_VALUE
                 *end = '\0';
-                name = rstrip(start);
+                rstrip(start);
+                name = start;
                 if (!HANDLER(user, section, name, NULL) && !error)
                     error = lineno;
 #else
