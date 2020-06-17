@@ -33,6 +33,9 @@ else
     if get_option('allow_no_value')
         arg_static += ['-DINI_ALLOW_NO_VALUE=1']
     endif
+    if get_option('remove_leading_quote')
+        arg_static += ['-DINI_REMOVE_LEADING_QUOTE=1']
+    endif
     if get_option('stop_on_first_error')
         arg_static += ['-DINI_STOP_ON_FIRST_ERROR=1']
     endif

@@ -38,6 +38,11 @@ option('allow_no_value',
   value : false,
   description : 'allow name with no value'
 )
+option('remove_leading_quote',
+  type : 'boolean',
+  value : false,
+  description : 'if value starts with a quote, reemove it and the last matching quote'
+)
 option('stop_on_first_error',
   type : 'boolean',
   value : false,

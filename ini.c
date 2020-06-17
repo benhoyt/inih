@@ -203,7 +203,21 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
                 value = lskip(value);
                 len = rstrip(value);
+#if INI_REMOVE_LEADING_QUOTE
+                if (value[0] == '\'' || value[0] == '"') {
+                    end = strrchr(value + 1, value[0]);
+                    if (end) {
+                        unsigned qlen = end - value;
+                        if (qlen < len - 1)
+                            memmove(value + qlen, value + qlen + 1, len - 1 - qlen);
+                        value[len - 1] = '\0';
+                        ++value;
+                    }
+                }
+#else
                 (void)len;
+#endif
+
                 /* Valid name[=:]value pair found, call handler */
 #if INI_ALLOW_MULTILINE
                 strncpy0(prev_name, name, sizeof(prev_name));

@@ -141,6 +141,13 @@ int ini_parse_string(const char* string, ini_handler handler, void* user);
 #define INI_ALLOW_NO_VALUE 0
 #endif
 
+/* Nonzero to remove surrounding quotation marks in values.
+   Note that this is very limited and supports no escapes.
+   Default is to pass values as they are. */
+#ifndef INI_REMOVE_LEADING_QUOTE
+#define INI_REMOVE_LEADING_QUOTE 0
+#endif
+
 #ifdef __cplusplus
 }
 #endif
