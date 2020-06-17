@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=@libdir@
+includedir=@includedir@
+
+Name: inih
+Version: @PACKAGE_VERSION@
+Description: ZeroMQ libuv.
+URL: https://github.com/MerlinXYoung/inih
+
+Libs: -L${libdir} -linih @LIBS@
+Cflags: -I${includedir}
