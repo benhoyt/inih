@@ -67,5 +67,6 @@ int main(void)
     parse("bom.ini");
     parse("duplicate_sections.ini");
     parse("no_value.ini");
+    parse("remove_leading_quote.ini");
     return 0;
 }

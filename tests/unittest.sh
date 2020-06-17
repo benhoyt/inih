@@ -55,3 +55,7 @@ rm -f unittest_call_handler_on_new_section
 gcc ../ini.c -DINI_ALLOW_NO_VALUE=1 unittest.c -o unittest_allow_no_value
 ./unittest_allow_no_value > baseline_allow_no_value.txt
 rm -f unittest_allow_no_value
+
+gcc ../ini.c -DINI_REMOVE_LEADING_QUOTE=1 unittest.c -o unittest_remove_leading_quote
+./unittest_remove_leading_quote > unittest_remove_leading_quote.txt
+rm -f unittest_remove_leading_quote

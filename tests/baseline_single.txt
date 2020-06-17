@@ -58,3 +58,25 @@ duplicate_sections.ini: e=0 user=108
 ... [section1]
 ... key1=val1;
 no_value.ini: e=2 user=109
+... normal_val=raw value;
+... [double quote]
+... with_quote_inside=raw" "value;
+... with_quote_trail=raw value " ";
+... with_quote_lead=" "remove leading quote;
+... with_quote_lead2=" " remove leading quote;
+... wrong_finishing_quote="raw value';
+... expected_quote="This is the primary usecase";
+... expected_quote2="With "other" 'quotes' inside";
+... with_suffix_quote="This is the primary usecase" with raw suffix;
+... with_suffix_quote2="With "other" 'quotes' inside" with raw suffix;
+... [single quote]
+... with_quote_inside=raw' 'value;
+... with_quote_trail=raw value ' ';
+... with_quote_lead=' 'remove leading quote;
+... with_quote_lead2='  remove leading quote;
+... wrong_finishing_quote='raw value";
+... expected_quote='This is the primary usecase';
+... expected_quote2='With "other" 'quotes' inside';
+... with_suffix_quote='This is the primary usecase' with raw suffix;
+... with_suffix_quote2='With "other" 'quotes' inside' with raw suffix;
+remove_leading_quote.ini: e=0 user=110
