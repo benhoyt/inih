@@ -100,7 +100,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     size_t offset;
 #endif
     char section[MAX_SECTION] = "";
+#if INI_ALLOW_MULTILINE
     char prev_name[MAX_NAME] = "";
+#endif
 
     char* start;
     char* end;
@@ -173,7 +175,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             if (*end == ']') {
                 *end = '\0';
                 strncpy0(section, start + 1, sizeof(section));
+#if INI_ALLOW_MULTILINE
                 *prev_name = '\0';
+#endif
 #if INI_CALL_HANDLER_ON_NEW_SECTION
                 if (!HANDLER(user, section, NULL, NULL) && !error)
                     error = lineno;
@@ -200,7 +204,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 rstrip(value);
 
                 /* Valid name[=:]value pair found, call handler */
+#if INI_ALLOW_MULTILINE
                 strncpy0(prev_name, name, sizeof(prev_name));
+#endif
                 if (!HANDLER(user, section, name, value) && !error)
                     error = lineno;
             }
