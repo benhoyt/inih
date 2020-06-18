@@ -52,7 +52,7 @@ static char* lskip(const char* s)
 }
 
 /* Return pointer to first char (of chars) or inline comment in given string,
-   or pointer to null at end of string if neither found. Inline comment must
+   or pointer to NUL at end of string if neither found. Inline comment must
    be prefixed by a whitespace character to register as a comment. */
 static char* find_chars_or_comment(const char* s, const char* chars)
 {
@@ -71,12 +71,15 @@ static char* find_chars_or_comment(const char* s, const char* chars)
     return (char*)s;
 }
 
-/* Version of strncpy that ensures dest (size bytes) is null-terminated. */
+/* Similar to strncpy, but ensures dest (size bytes) is
+   NUL-terminated, and doesn't pad with NULs. */
 static char* strncpy0(char* dest, const char* src, size_t size)
 {
-    /* Use memcpy instead of strncpy to avoid gcc warnings (see issue #91) */
-    memcpy(dest, src, size - 1);
-    dest[size - 1] = '\0';
+    /* Could use strncpy internally, but it causes gcc warnings (see issue #91) */
+    size_t i;
+    for (i = 0; i < size - 1 && src[i]; i++)
+        dest[i] = src[i];
+    dest[i] = '\0';
     return dest;
 }
 
