@@ -9,8 +9,8 @@
 //
 // https://github.com/benhoyt/inih
 
-#ifndef __INIREADER_H__
-#define __INIREADER_H__
+#ifndef INIREADER_H
+#define INIREADER_H
 
 #include <map>
 #include <string>
@@ -70,4 +70,4 @@ private:
                             const char* value);
 };
 
-#endif  // __INIREADER_H__
+#endif  // INIREADER_H
