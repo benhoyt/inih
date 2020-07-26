@@ -45,7 +45,7 @@ int dumper(void* user, const char* section, const char* name,
     return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
 }
 
-void parse(const char* fname) {
+int parse(const char* fname) {
     static int u = 100;
     int e;
 
@@ -53,19 +53,18 @@ void parse(const char* fname) {
     e = ini_parse(fname, dumper, &u);
     printf("%s: e=%d user=%d\n", fname, e, User);
     u++;
+
+    return e;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    parse("no_file.ini");
-    parse("normal.ini");
-    parse("bad_section.ini");
-    parse("bad_comment.ini");
-    parse("user_error.ini");
-    parse("multi_line.ini");
-    parse("bad_multi.ini");
-    parse("bom.ini");
-    parse("duplicate_sections.ini");
-    parse("no_value.ini");
-    return 0;
+    int ret;
+    int exprc = atoi(argv[2]);
+
+    ret = parse(argv[1]);
+    if (ret != exprc)
+        printf("unexpected RC: got %d, expected %d\n", ret, exprc);
+
+    return ret != exprc;
 }

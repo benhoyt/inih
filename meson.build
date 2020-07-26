@@ -107,3 +107,5 @@ if get_option('with_INIReader')
         include_directories : inc_INIReader
     )
 endif
+
+subdir('tests')

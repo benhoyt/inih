@@ -15,6 +15,7 @@ addons:
 script:
   - meson setup builddir
   - ninja -C builddir
+  - meson test -C builddir
   - cd tests
   - ./unittest.sh
   - cd ../examples
