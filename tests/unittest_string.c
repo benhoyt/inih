@@ -5,39 +5,60 @@
 #include <string.h>
 #include "../ini.h"
 
-int User;
 char Prev_section[50];
+char output[1024];
 
 int dumper(void* user, const char* section, const char* name,
            const char* value)
 {
-    User = *((int*)user);
+    char line[1024];
     if (strcmp(section, Prev_section)) {
-        printf("... [%s]\n", section);
+	sprintf(line, "[%s]\n", section);
+	strcat(output, line);
         strncpy(Prev_section, section, sizeof(Prev_section));
         Prev_section[sizeof(Prev_section) - 1] = '\0';
     }
-    printf("... %s=%s;\n", name, value);
+
+    sprintf(line, "%s=%s;\n", name, value);
+    strcat(output, line);
     return 1;
 }
 
-void parse(const char* name, const char* string) {
-    static int u = 100;
+int parse(char* string, char* expected)
+{
     int e;
 
     *Prev_section = '\0';
-    e = ini_parse_string(string, dumper, &u);
-    printf("%s: e=%d user=%d\n", name, e, User);
-    u++;
+    *output = '\0';
+
+    e = ini_parse_string(string, dumper, NULL);
+
+    if (strcmp(output, expected)) {
+	    printf("MISSMATCH!! \n-- got: '%s' \n-- expected: '%s'\n",
+			    output, expected);
+	    return -5;
+    }
+
+    return e;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    parse("empty string", "");
-    parse("basic", "[section]\nfoo = bar\nbazz = buzz quxx");
-    parse("crlf", "[section]\r\nhello = world\r\nforty_two = 42\r\n");
-    parse("long line", "[sec]\nfoo = 01234567890123456789\nbar=4321\n");
-    parse("long continued", "[sec]\nfoo = 0123456789012bix=1234\n");
-    parse("error", "[s]\na=1\nb\nc=3");
-    return 0;
+    int ret;
+    int exprc;
+
+    if (argc < 4) {
+	    printf("Missing parameters. try %s <input> <expected> <rc>\n", argv[0]);
+	    return -1;
+    }
+
+    exprc = atoi(argv[3]);
+
+    ret = parse(argv[1], argv[2]);
+    if (ret)
+        printf("parser return an error: %d\n", ret);
+    if (ret != exprc)
+        printf("unexpected RC: got %d, expected %d\n", ret, exprc);
+
+    return (ret != exprc);
 }

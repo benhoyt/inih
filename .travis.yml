@@ -16,8 +16,6 @@ script:
   - meson setup builddir
   - ninja -C builddir
   - meson test -C builddir
-  - cd tests
-  - ./unittest.sh
-  - cd ../examples
+  - cd examples
   - ./cpptest.sh
   - git diff --exit-code

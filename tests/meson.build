@@ -84,3 +84,51 @@ foreach name, case : ini_cases
 
     endforeach
 endforeach
+
+str_cases = {
+    'baseline': {
+        'in': '[aaa]\nbbb=ccc\n',
+        'exp': '[aaa]\nbbb=ccc;\n',
+        'rc': 0,
+        },
+    'crlf': {
+        'in': '[section]\r\nhello = world\r\nforty_two = 42\r\n',
+        'exp': '[section]\nhello=world;\nforty_two=42;\n',
+        'rc': 0,
+        },
+    'long line': {
+        'in': '[sec]\nfoo = 01234567890123456789\nbar=4321\n',
+        'exp': '[sec]\nfoo=01234567890123456789;\nbar=4321;\n',
+        'rc': 0,
+        },
+    'long continued': {
+        'in': '[sec]\nfoo = 0123456789012bix=1234\n',
+        'exp': '[sec]\nfoo=0123456789012bix=1234;\n',
+        'rc': 0,
+        },
+    'error': {
+        'in': '[s]\na=1\nb\nc=3',
+        'exp': '[s]\na=1;\nc=3;\n',
+        'rc': 3,
+        },
+    }
+
+utest_str = executable('utest_str', ['../ini.c', './unittest_string.c'],
+    include_directories: inc_inih,
+    )
+
+utest_str_heap = executable('utest_str_heap', ['../ini.c', './unittest_string.c'],
+    include_directories: inc_inih,
+    c_args: heap_extra_opts,
+    )
+
+foreach name, case : str_cases
+    test(name, utest_str,
+        args: [case['in'], case['exp'], case['rc'].to_string()],
+        suite: ['strings', name, 'stack'],
+        )
+    test(name, utest_str_heap,
+        args: [case['in'], case['exp'], case['rc'].to_string()],
+        suite: ['strings', name, 'heap'],
+        )
+endforeach
