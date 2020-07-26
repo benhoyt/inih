@@ -1,3 +1,4 @@
+dist: focal
 language: c
 
 # Setting sudo access to false will let Travis CI use containers
@@ -5,7 +6,15 @@ language: c
 # https://docs.travis-ci.com/user/reference/overview/
 sudo: false
 
+addons:
+    apt:
+        update: true
+        packages:
+            - meson
+
 script:
+  - meson setup builddir
+  - ninja -C builddir
   - cd tests
   - ./unittest.sh
   - cd ../examples
