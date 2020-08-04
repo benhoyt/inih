@@ -71,6 +71,35 @@ static char* find_chars_or_comment(const char* s, const char* chars)
     return (char*)s;
 }
 
+/* Return a pointer to the last non-comment ']' or the first inline comment in
+   a given string, or pointer to NUL at end of string if neither found.
+   Inline comment must be prefixed by a whitespace character to register as a
+   comment. */
+static char* find_end_of_section_name(const char* s)
+{
+    const char* comment_prefixes = INI_INLINE_COMMENT_PREFIXES;
+    char* section_end = NULL;
+    char* comment = NULL;
+    char* off = NULL;
+    size_t i;
+
+#if INI_ALLOW_INLINE_COMMENTS
+    for (i = 0; i < strlen(comment_prefixes); i++){
+        off = (char*)strchr(s, comment_prefixes[i]);
+        if (off && isspace(*(off - 1))) {
+            *off = '\0';
+            comment = off;
+            break;
+        }
+    }
+#endif
+    section_end = (char*)strrchr(s, ']');
+    if (section_end && comment)
+        return section_end < comment ? section_end : comment;
+    else
+        return section_end ?: (char*)strchr(s, '\0');
+}
+
 /* Similar to strncpy, but ensures dest (size bytes) is
    NUL-terminated, and doesn't pad with NULs. */
 static char* strncpy0(char* dest, const char* src, size_t size)
@@ -169,7 +198,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
         else if (*start == '[') {
             /* A "[section]" line */
-            end = find_chars_or_comment(start + 1, "]");
+            end = find_end_of_section_name(start + 1);
             if (*end == ']') {
                 *end = '\0';
                 strncpy0(section, start + 1, sizeof(section));
