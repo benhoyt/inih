@@ -19,3 +19,13 @@ long continued: e=0 user=104
 ... a=1;
 ... c=3;
 error: e=3 user=105
+... [sec[tio]n]
+... a=1;
+... b=2;
+... c=3;
+odd section: e=0 user=106
+... [section]
+... a=1;
+... b=2;
+... c=3;
+odd section with comment: e=0 user=107

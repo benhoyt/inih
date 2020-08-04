@@ -39,5 +39,7 @@ int main(void)
     parse("long line", "[sec]\nfoo = 01234567890123456789\nbar=4321\n");
     parse("long continued", "[sec]\nfoo = 0123456789012bix=1234\n");
     parse("error", "[s]\na=1\nb\nc=3");
+    parse("odd section", "[sec[tio]n]\na=1\nb=2\nc=3");
+    parse("odd section with comment", "[section] ; foo ]\na=1\nb=2\nc=3");
     return 0;
 }
