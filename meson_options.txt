@@ -45,7 +45,7 @@ option('stop_on_first_error',
 )
 option('report_line_numbers',
   type : 'boolean',
-  value : false,
+  value : true,
   description : 'report line number on ini_handler callback'
 )
 option('call_handler_on_new_section',

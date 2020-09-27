@@ -26,7 +26,7 @@ You can control various aspects of inih using preprocessor defines:
 ### Parsing options ###
 
   * **Stop on first error:** By default, inih keeps parsing the rest of the file after an error. To stop parsing on the first error, add `-DINI_STOP_ON_FIRST_ERROR=1`.
-  * **Report line numbers:** By default, the `ini_handler` callback doesn't receive the line number as a parameter. If you need that, add `-DINI_HANDLER_LINENO=1`.
+  * **Report line numbers:** By default, the `ini_handler` callback receives the line number as a parameter. If you don't need that, add `-DINI_HANDLER_LINENO=0`.
   * **Call handler on new section:** By default, inih only calls the handler on each `name=value` pair. To detect new sections (e.g., the INI file has multiple sections with the same name), add `-DINI_CALL_HANDLER_ON_NEW_SECTION=1`. Your handler function will then be called each time a new section is encountered, with `section` set to the new section name but `name` and `value` set to NULL.
 
 ### Memory options ###

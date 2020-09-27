@@ -23,7 +23,7 @@ extern "C" {
 
 /* Nonzero if ini_handler callback should accept lineno parameter. */
 #ifndef INI_HANDLER_LINENO
-#define INI_HANDLER_LINENO 0
+#define INI_HANDLER_LINENO 1
 #endif
 
 /* Typedef for prototype of handler function. */
