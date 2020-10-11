@@ -55,3 +55,7 @@ rm -f unittest_call_handler_on_new_section
 gcc ../ini.c -DINI_ALLOW_NO_VALUE=1 unittest.c -o unittest_allow_no_value
 ./unittest_allow_no_value > baseline_allow_no_value.txt
 rm -f unittest_allow_no_value
+
+gcc -DINI_CUSTOM_ALLOCATOR=1 -DINI_USE_STACK=0 -DINI_ALLOW_REALLOC=1 -DINI_INITIAL_ALLOC=12 ../ini.c unittest_alloc.c -o unittest_alloc
+./unittest_alloc > baseline_alloc.txt
+rm -f unittest_alloc
