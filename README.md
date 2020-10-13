@@ -35,6 +35,7 @@ You can control various aspects of inih using preprocessor defines:
   * **Maximum line length:** The default maximum line length (for stack or heap) is 200 bytes. To override this, add something like `-DINI_MAX_LINE=1000`. Note that `INI_MAX_LINE` must be 3 more than the longest line (due to `\r`, `\n`, and the NUL).
   * **Initial malloc size:** `INI_INITIAL_ALLOC` specifies the initial malloc size when using the heap. It defaults to 200 bytes.
   * **Allow realloc:** By default when using the heap (`-DINI_USE_STACK=0`), inih allocates a fixed-sized buffer of `INI_INITIAL_ALLOC` bytes. To allow this to grow to `INI_MAX_LINE` bytes, doubling if needed, set `-DINI_ALLOW_REALLOC=1`.
+  * **Custom allocator:** By default when using the heap, the standard library's `malloc`, `free`, and `realloc` functions are used; to use a custom allocator, specify `-DINI_CUSTOM_ALLOCATOR=1` (and `-DINI_USE_STACK=0`). You must define and link functions named `ini_malloc`, `ini_free`, and (if `INI_ALLOW_REALLOC` is set) `ini_realloc`, which must have the same signatures as the `stdlib.h` memory allocation functions.
 
 ## Simple example in C ##
 

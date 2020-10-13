@@ -22,7 +22,17 @@ https://github.com/benhoyt/inih
 #include "ini.h"
 
 #if !INI_USE_STACK
+#if INI_CUSTOM_ALLOCATOR
+#include <stddef.h>
+void* ini_malloc(size_t size);
+void ini_free(void* ptr);
+void* ini_realloc(void* ptr, size_t size);
+#else
 #include <stdlib.h>
+#define ini_malloc malloc
+#define ini_free free
+#define ini_realloc realloc
+#endif
 #endif
 
 #define MAX_SECTION 50
@@ -110,7 +120,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     int error = 0;
 
 #if !INI_USE_STACK
-    line = (char*)malloc(INI_INITIAL_ALLOC);
+    line = (char*)ini_malloc(INI_INITIAL_ALLOC);
     if (!line) {
         return -2;
     }
@@ -130,9 +140,9 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             max_line *= 2;
             if (max_line > INI_MAX_LINE)
                 max_line = INI_MAX_LINE;
-            new_line = realloc(line, max_line);
+            new_line = ini_realloc(line, max_line);
             if (!new_line) {
-                free(line);
+                ini_free(line);
                 return -2;
             }
             line = new_line;
@@ -224,7 +234,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     }
 
 #if !INI_USE_STACK
-    free(line);
+    ini_free(line);
 #endif
 
     return error;
