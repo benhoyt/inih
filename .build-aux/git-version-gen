@@ -1,0 +1,1 @@
+printf %s "$(git --no-pager describe --abbrev=8 --tags --always --dirty)"
