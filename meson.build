@@ -1,5 +1,5 @@
 project('inih',
-    ['c','cpp'],
+    ['c'],
     default_options : ['default_library=static'],
     license : 'BSD-3-Clause',
 )
@@ -83,6 +83,7 @@ inih_dep = declare_dependency(
 
 #### INIReader ####
 if get_option('with_INIReader')
+    add_languages('cpp')
     inc_INIReader = include_directories('cpp')
 
     lib_INIReader = library('INIReader',
