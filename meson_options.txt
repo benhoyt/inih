@@ -1,11 +1,11 @@
 option('distro_install',
   type : 'boolean',
-  value : false,
+  value : true,
   description : 'install shared libs, headers and pkg-config entries'
 )
 option('with_INIReader',
   type : 'boolean',
-  value : false,
+  value : true,
   description : 'compile and (if selected) install INIReader'
 )
 option('multi-line_entries',
