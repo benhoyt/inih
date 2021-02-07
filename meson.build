@@ -1,6 +1,5 @@
 project('inih',
     ['c'],
-    default_options : ['default_library=static'],
     license : 'BSD-3-Clause',
 )
 
