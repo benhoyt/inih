@@ -77,6 +77,7 @@ endif
 
 inih_dep = declare_dependency(
     link_with : lib_inih,
+    compile_args : arg_static,
     include_directories : inc_inih
 )
 
