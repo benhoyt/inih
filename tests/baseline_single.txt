@@ -1,5 +1,5 @@
 no_file.ini: e=-1 user=0
-... [section1]
+... [section1_TODO]
 ... one=This is a test;
 ... two=1234;
 ... [ section 2 ]
