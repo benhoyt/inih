@@ -100,7 +100,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     /* Uses a fair bit of stack (use heap instead if you need to) */
 #if INI_USE_STACK
     char line[INI_MAX_LINE];
-    int max_line = INI_MAX_LINE;
+    size_t max_line = INI_MAX_LINE;
 #else
     char* line;
     size_t max_line = INI_INITIAL_ALLOC;
