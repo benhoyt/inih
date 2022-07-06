@@ -33,7 +33,7 @@ void parse(const char* name, const char* string) {
 
 extern int LLVMFuzzerTestOneInput(const char *Data, size_t Size) {
 
-    if(a < 1 || a > 10240){
+    if(Size < 1 || Size > 10240){
 		return 0;
 	}
 	
