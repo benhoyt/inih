@@ -46,6 +46,8 @@ user_error.ini: e=3 user=104
 ... multi=the quick;
 ... multi=brown fox;
 ... name=bob smith;
+... foo=bar;
+... foo=Hi World;
 multi_line.ini: e=0 user=105
 ... indented;
 bad_multi.ini: e=0 user=106
