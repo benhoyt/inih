@@ -1,7 +1,7 @@
 project('inih',
     ['c'],
     license : 'BSD-3-Clause',
-    version : '55',
+    version : '56',
 )
 
 #### options ####

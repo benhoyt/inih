@@ -143,11 +143,11 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 
 ## Using inih with tipi.build
 
-`inih` can be easily used in [tipi.build](https://tipi.build) projects simply by adding the following entry to your `.tipi/deps`:
+`inih` can be easily used in [tipi.build](https://tipi.build) projects simply by adding the following entry to your `.tipi/deps` (replace `r56` with the latest version tag):
 
 ```json
 {
-    "benhoyt/inih": { "@": "r55" }
+    "benhoyt/inih": { "@": "r56" }
 }
 ```
 
