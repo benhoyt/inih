@@ -1,0 +1,23 @@
+name: build (and if tag, release)
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: autoconf
+        run: autoreconf -fi
+      - name: configure
+        run: ./configure
+      - name: build
+        run: make
+      - name: check
+        run: make check
+      - name: distcheck
+        run: make distcheck
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/r')
+        with:
+          files: '*.tar.xz'
