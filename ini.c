@@ -48,7 +48,11 @@ typedef struct {
 static char* rstrip(char* s)
 {
     char* p = s + strlen(s);
+#if INI_NO_STRING_QUOTE
+    while (p > s && (isspace((unsigned char)(*--p)) || (unsigned char)(*p) == '"'))
+#else
     while (p > s && isspace((unsigned char)(*--p)))
+#endif
         *p = '\0';
     return s;
 }
@@ -56,7 +60,11 @@ static char* rstrip(char* s)
 /* Return pointer to first non-whitespace char in given string. */
 static char* lskip(const char* s)
 {
+#if INI_NO_STRING_QUOTE
+    while (*s && (isspace((unsigned char)(*s)) || (unsigned char)(*s) == '"'))
+#else
     while (*s && isspace((unsigned char)(*s)))
+#endif
         s++;
     return (char*)s;
 }

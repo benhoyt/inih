@@ -170,6 +170,13 @@ INI_API int ini_parse_string(const char* string, ini_handler handler, void* user
 #define INI_CUSTOM_ALLOCATOR 0
 #endif
 
+/* Nonzero to remove string quoting from settings. Settings could be saved with
+   quotes and sometimes is useful having the clean value parsed*/
+#ifndef INI_NO_STRING_QUOTE
+#define INI_NO_STRING_QUOTE 1
+#endif
+
+
 
 #ifdef __cplusplus
 }
