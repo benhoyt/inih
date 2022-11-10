@@ -69,7 +69,8 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
 {
     string valstr = Get(section, name, "");
     // Convert to lower case to make string comparisons case-insensitive
-    std::transform(valstr.begin(), valstr.end(), valstr.begin(), ::tolower);
+    std::transform(valstr.begin(), valstr.end(), valstr.begin(),
+        [](const unsigned char& ch) { return static_cast<unsigned char>(::tolower(ch)); });
     if (valstr == "true" || valstr == "yes" || valstr == "on" || valstr == "1")
         return true;
     else if (valstr == "false" || valstr == "no" || valstr == "off" || valstr == "0")
@@ -98,7 +99,8 @@ string INIReader::MakeKey(const string& section, const string& name)
 {
     string key = section + "=" + name;
     // Convert to lower case to make section/name lookups case-insensitive
-    std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+    std::transform(key.begin(), key.end(), key.begin(),
+        [](const unsigned char& ch) { return static_cast<unsigned char>(::tolower(ch)); });
     return key;
 }
 
