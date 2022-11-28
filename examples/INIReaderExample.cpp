@@ -12,7 +12,8 @@ int main()
         return 1;
     }
     std::cout << "Config loaded from 'test.ini': version="
-              << reader.GetInteger("protocol", "version", -1) << ", name="
+              << reader.GetInteger("protocol", "version", -1) << ", unsigned version="
+              << reader.GetUnsigned("protocol", "version", -1) << ", name="
               << reader.Get("user", "name", "UNKNOWN") << ", email="
               << reader.Get("user", "email", "UNKNOWN") << ", pi="
               << reader.GetReal("user", "pi", -1) << ", active="
