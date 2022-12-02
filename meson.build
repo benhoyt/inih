@@ -27,7 +27,7 @@ else
     endif
     sol_comment_prefix = get_option('start-of-line_comment_prefix')
     if sol_comment_prefix != ';#'
-        arg_static += ['-DINI_START_COMMENT_PREFIXES="' + start-of-line_comment_prefix + '"']
+        arg_static += ['-DINI_START_COMMENT_PREFIXES="' + sol_comment_prefix + '"']
     endif
     if get_option('allow_no_value')
         arg_static += ['-DINI_ALLOW_NO_VALUE=1']
