@@ -14,6 +14,7 @@
 
 #include <map>
 #include <string>
+#include <cstdint>
 
 // Visibility symbols, required for Windows DLLs
 #ifndef INI_API
@@ -66,10 +67,17 @@ public:
     // not found or not a valid integer (decimal "1234", "-1234", or hex "0x4d2").
     INI_API long GetInteger(const std::string& section, const std::string& name, long default_value) const;
 
-    // Get an unsigned integer (unsigned long) value from INI file,
-    // returning default_value if not found or not a valid integer 
-    // (decimal "1234", or hex "0x4d2").
+    // Get a 64-bit integer (int64_t) value from INI file, returning default_value if
+    // not found or not a valid integer (decimal "1234", "-1234", or hex "0x4d2").
+    INI_API int64_t GetInteger64(const std::string& section, const std::string& name, int64_t default_value) const;
+
+    // Get an unsigned integer (unsigned long) value from INI file, returning default_value if
+    // not found or not a valid unsigned integer (decimal "1234", or hex "0x4d2").
     INI_API unsigned long GetUnsigned(const std::string& section, const std::string& name, unsigned long default_value) const;
+
+    // Get an unsigned 64-bit integer (uint64_t) value from INI file, returning default_value if
+    // not found or not a valid unsigned integer (decimal "1234", or hex "0x4d2").
+    INI_API uint64_t GetUnsigned64(const std::string& section, const std::string& name, uint64_t default_value) const;
 
     // Get a real (floating point double) value from INI file, returning
     // default_value if not found or not a valid floating point value

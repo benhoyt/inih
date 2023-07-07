@@ -56,6 +56,16 @@ long INIReader::GetInteger(const string& section, const string& name, long defau
     return end > value ? n : default_value;
 }
 
+INI_API int64_t INIReader::GetInteger64(const std::string& section, const std::string& name, int64_t default_value) const
+{
+    string valstr = Get(section, name, "");
+    const char* value = valstr.c_str();
+    char* end;
+    // This parses "1234" (decimal) and also "0x4D2" (hex)
+    int64_t n = strtoll(value, &end, 0);
+    return end > value ? n : default_value;
+}
+
 unsigned long INIReader::GetUnsigned(const string& section, const string& name, unsigned long default_value) const
 {
     string valstr = Get(section, name, "");
@@ -63,6 +73,16 @@ unsigned long INIReader::GetUnsigned(const string& section, const string& name, 
     char* end;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
     unsigned long n = strtoul(value, &end, 0);
+    return end > value ? n : default_value;
+}
+
+INI_API uint64_t INIReader::GetUnsigned64(const std::string& section, const std::string& name, uint64_t default_value) const
+{
+    string valstr = Get(section, name, "");
+    const char* value = valstr.c_str();
+    char* end;
+    // This parses "1234" (decimal) and also "0x4D2" (hex)
+    uint64_t n = strtoull(value, &end, 0);
     return end > value ? n : default_value;
 }
 
