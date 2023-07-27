@@ -66,12 +66,13 @@ extern int LLVMFuzzerTestOneInput(const char *Data, size_t Size) {
 
     int ret;
     *Prev_section = '\0';
+    int u = 100;
 
     char *data = malloc(Size + 1);
     memcpy(data, Data, Size);
     data[Size] = '\0';
 
-    ret = ini_parse(data, dumper, NULL);
+    ret = ini_parse(data, dumper, &u);
 
     free(data);
 
