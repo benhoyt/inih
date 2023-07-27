@@ -74,7 +74,7 @@ extern int LLVMFuzzerTestOneInput(const char *Data, size_t Size) {
     ret = ini_parse(data, dumper, NULL);
 
     free(data);
-
+    abort();
     return ret;
 }
 
