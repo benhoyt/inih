@@ -258,9 +258,15 @@ int ini_parse(const char* filename, ini_handler handler, void* user)
     FILE* file;
     int error;
 
+#ifdef _MSC_VER
+    errno_t err = fopen_s(&file, filename, "r");
+    if (err != 0)
+        return -1;
+#else
     file = fopen(filename, "r");
     if (!file)
         return -1;
+#endif
     error = ini_parse_file(file, handler, user);
     fclose(file);
     return error;
