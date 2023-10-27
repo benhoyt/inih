@@ -97,7 +97,7 @@ int main()
 {
     INIReader reader("../examples/test.ini");
 
-    if (reader.ParseError() < 0) {
+    if (reader.ParseError() > 0) {
         std::cout << "Can't load 'test.ini'\n";
         return 1;
     }
