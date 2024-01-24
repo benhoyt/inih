@@ -1,7 +1,7 @@
 project('inih',
     ['c'],
     license : 'BSD-3-Clause',
-    version : '57',
+    version : '58',
     default_options : ['cpp_std=c++11']
 )
 
