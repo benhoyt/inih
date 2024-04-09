@@ -5,6 +5,9 @@
 #include <string.h>
 #include "../ini.h"
 
+#define kMinInputLength 8
+#define kMaxInputLength 512
+
 int User;
 char Prev_section[50];
 
@@ -12,71 +15,31 @@ int dumper(void* user, const char* section, const char* name,
            const char* value)
 {
     User = *((int*)user);
-    if (!name || strcmp(section, Prev_section)) {
-        printf("... [%s]\n", section);
+    if (strcmp(section, Prev_section)) {
         strncpy(Prev_section, section, sizeof(Prev_section));
         Prev_section[sizeof(Prev_section) - 1] = '\0';
     }
-    if (!name) {
-        return 1;
-    }
-
-    printf("... %s%s%s;\n", name, value ? "=" : "", value ? value : "");
-
-    if (!value) {
-        // Happens when INI_ALLOW_NO_VALUE=1 and line has no value (no '=' or ':')
-        return 1;
-    }
-
-    return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
+    return 1;
 }
 
-void parse(const char* fname) {
-    static int u = 100;
-    int e;
-
-    *Prev_section = '\0';
-    e = ini_parse(fname, dumper, &u);
-    printf("%s: e=%d user=%d\n", fname, e, User);
-    u++;
-}
-
-#ifndef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-
-int main(int argc, char **argv)
-{
-    if (argc < 2) {
-        printf("usage: inihfuzz file.ini\n");
-        return 1;
-    }
-    parse(argv[1]);
-    return 0;
-}
-
-#else
-
-#define kMinInputLength 20
-#define kMaxInputLength 1024
-
-extern int LLVMFuzzerTestOneInput(const char *Data, size_t Size) {
-
-    if (Size < kMinInputLength || Size > kMaxInputLength) {
+extern int LLVMFuzzerTestOneInput(const char *data, size_t size) {
+    if (size < kMinInputLength || size > kMaxInputLength) {
         return 0;
     }
 
-    int ret;
-    *Prev_section = '\0';
-    int u = 100;
+    int e;
+    static int u = 100;
+    Prev_section[0] = '\0';
 
-    char *data = malloc(Size + 1);
-    memcpy(data, Data, Size);
-    data[Size] = '\0';
+    char *data_in = malloc(size + 1);
+    if (!data_in) return 0; // Just in case malloc fails
 
-    ret = ini_parse(data, dumper, &u);
+    memcpy(data_in, data, size);
+    data_in[size] = '\0';
 
-    free(data);
+    e = ini_parse_string(data_in, dumper, &u);
 
-    return ret;
+    free(data_in);
+
+    return e;
 }
-
-#endif
