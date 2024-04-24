@@ -41,8 +41,6 @@ void parse(const char* fname) {
     u++;
 }
 
-#ifndef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -52,31 +50,3 @@ int main(int argc, char **argv)
     parse(argv[1]);
     return 0;
 }
-
-#else
-
-#define kMinInputLength 20
-#define kMaxInputLength 1024
-
-extern int LLVMFuzzerTestOneInput(const char *Data, size_t Size) {
-
-    if (Size < kMinInputLength || Size > kMaxInputLength) {
-        return 0;
-    }
-
-    int ret;
-    *Prev_section = '\0';
-    int u = 100;
-
-    char *data = malloc(Size + 1);
-    memcpy(data, Data, Size);
-    data[Size] = '\0';
-
-    ret = ini_parse(data, dumper, &u);
-
-    free(data);
-
-    return ret;
-}
-
-#endif
