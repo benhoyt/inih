@@ -2,7 +2,8 @@ project('inih',
     ['c'],
     license : 'BSD-3-Clause',
     version : '58',
-    default_options : ['cpp_std=c++11']
+    default_options : ['cpp_std=c++11'],
+    meson_version: '>=0.56.0'
 )
 
 #### options ####
@@ -71,8 +72,10 @@ endif
 #### inih ####
 inc_inih = include_directories('.')
 
+src_inih = files('ini.c')
+
 lib_inih = library('inih',
-    ['ini.c'],
+    [src_inih],
     include_directories : inc_inih,
     c_args : [arg_static, extra_args],
     install : distro_install,
@@ -96,13 +99,17 @@ inih_dep = declare_dependency(
     include_directories : inc_inih
 )
 
+subdir('tests')
+
 #### INIReader ####
 if get_option('with_INIReader')
     add_languages('cpp')
     inc_INIReader = include_directories('cpp')
 
+    src_INIReader = files(join_paths('cpp', 'INIReader.cpp'))
+
     lib_INIReader = library('INIReader',
-        ['cpp/INIReader.cpp'],
+        src_INIReader,
         cpp_args : extra_args,
         include_directories : inc_INIReader,
         dependencies : inih_dep,
@@ -126,4 +133,6 @@ if get_option('with_INIReader')
         include_directories : inc_INIReader,
         compile_args : extra_args
     )
+
+    subdir('examples')
 endif
