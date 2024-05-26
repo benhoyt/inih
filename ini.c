@@ -54,17 +54,17 @@ static char* ini_rstrip(char* s)
 }
 
 /* Return pointer to first non-whitespace char in given string. */
-static char* ini_lskip(const char* s)
+static char* ini_lskip(char* s)
 {
     while (*s && isspace((unsigned char)(*s)))
         s++;
-    return (char*)s;
+    return s;
 }
 
 /* Return pointer to first char (of chars) or inline comment in given string,
    or pointer to NUL at end of string if neither found. Inline comment must
    be prefixed by a whitespace character to register as a comment. */
-static char* ini_find_chars_or_comment(const char* s, const char* chars)
+static char* ini_find_chars_or_comment(char* s, const char* chars)
 {
 #if INI_ALLOW_INLINE_COMMENTS
     int was_space = 0;
@@ -78,7 +78,7 @@ static char* ini_find_chars_or_comment(const char* s, const char* chars)
         s++;
     }
 #endif
-    return (char*)s;
+    return s;
 }
 
 /* Similar to strncpy, but ensures dest (size bytes) is
