@@ -156,6 +156,14 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
         lineno++;
 
+#if INI_USE_STACK
+        if (strlen(line) == max_line - 1 && line[max_line - 2] != '\n') {
+            /* Exit even if INI_STOP_ON_FIRST_ERROR is not set */
+            error = lineno;
+            break;
+        }
+#endif
+
         start = line;
 #if INI_ALLOW_BOM
         if (lineno == 1 && (unsigned char)start[0] == 0xEF &&
