@@ -17,7 +17,7 @@
 
 using std::string;
 
-INIReader::INIReader(const string& filename)
+INIReader::INIReader(const std::string& filename)
 {
     _error = ini_parse(filename.c_str(), ValueHandler, this);
 }
