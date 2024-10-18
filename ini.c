@@ -164,7 +164,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             start += 3;
         }
 #endif
-        start = ini_lskip(ini_rstrip(start));
+        start = ini_rstrip(ini_lskip(start));
 
         if (strchr(INI_START_COMMENT_PREFIXES, *start)) {
             /* Start-of-line comment */
