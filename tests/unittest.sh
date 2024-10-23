@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CC="gcc -Wall"
+CC="${CC:-gcc} -Wall"
 
 $CC ../ini.c unittest.c -o unittest_multi
 ./unittest_multi > baseline_multi.txt
