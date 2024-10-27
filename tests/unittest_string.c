@@ -1,4 +1,4 @@
-/* inih -- unit tests for ini_parse_string() */
+/* inih -- tests for ini_parse_string() */
 
 #include <stdio.h>
 #include <stdlib.h>

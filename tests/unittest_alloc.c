@@ -1,4 +1,4 @@
-/* inih -- unit tests for custom memory allocator */
+/* inih -- tests with custom memory allocator */
 
 #include <stdio.h>
 #include <stdlib.h>
