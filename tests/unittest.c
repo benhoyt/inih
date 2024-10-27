@@ -72,5 +72,6 @@ int main(void)
     parse("bom.ini");
     parse("duplicate_sections.ini");
     parse("no_value.ini");
+    parse("long_section.ini");
     return 0;
 }
