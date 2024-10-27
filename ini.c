@@ -107,13 +107,13 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
 #if INI_ALLOW_REALLOC && !INI_USE_STACK
     char* new_line;
-    size_t offset;
 #endif
     char section[MAX_SECTION] = "";
 #if INI_ALLOW_MULTILINE
     char prev_name[MAX_NAME] = "";
 #endif
 
+    size_t offset;
     char* start;
     char* end;
     char* name;
@@ -136,9 +136,10 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
     /* Scan through stream line by line */
     while (reader(line, (int)max_line, stream) != NULL) {
-#if INI_ALLOW_REALLOC && !INI_USE_STACK
+        lineno++;
         offset = strlen(line);
         while (offset == max_line - 1 && line[offset - 1] != '\n') {
+#if INI_ALLOW_REALLOC && !INI_USE_STACK
             max_line *= 2;
             if (max_line > INI_MAX_LINE)
                 max_line = INI_MAX_LINE;
@@ -153,10 +154,13 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             if (max_line >= INI_MAX_LINE)
                 break;
             offset += strlen(line + offset);
-        }
+#else
+            if (!error)
+              error=lineno;
+            break;
 #endif
+        }
 
-        lineno++;
 
         start = line;
 #if INI_ALLOW_BOM
