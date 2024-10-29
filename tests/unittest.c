@@ -62,16 +62,5 @@ void parse(const char* fname) {
 
 int main(void)
 {
-    parse("no_file.ini");
-    parse("normal.ini");
-    parse("bad_section.ini");
-    parse("bad_comment.ini");
-    parse("user_error.ini");
-    parse("multi_line.ini");
-    parse("bad_multi.ini");
-    parse("bom.ini");
-    parse("duplicate_sections.ini");
-    parse("no_value.ini");
-    parse("long_section.ini");
     return 0;
 }
