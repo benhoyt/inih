@@ -93,6 +93,19 @@ static char* ini_strncpy0(char* dest, const char* src, size_t size)
     return dest;
 }
 
+#if !INI_ALLOW_REALLOC || INI_USE_STACK
+/* Advance the stream. This is useful for the next line */
+static void discard_remaining_line(void *stream, ini_reader reader){
+  char s[50];
+  size_t length;
+  do{
+    if (reader(s, sizeof(s), stream) == NULL)
+      break; // false positive
+    length=strlen(s);
+  } while(length == sizeof(s) - 1 && s[length-1] != '\n');
+}
+#endif
+
 /* See documentation in header file. */
 int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                      void* user)
@@ -157,6 +170,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #else
             if (!error)
               error=lineno;
+            discard_remaining_line(stream, reader);
             break;
 #endif
         }
