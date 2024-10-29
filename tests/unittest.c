@@ -62,5 +62,6 @@ void parse(const char* fname) {
 
 int main(void)
 {
+    parse("long_line.ini");
     return 0;
 }
