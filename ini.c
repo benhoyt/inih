@@ -264,13 +264,14 @@ int ini_parse(const char* filename, ini_handler handler, void* user)
     FILE* file;
     int error;
 
-    file = fopen(filename, "r");
-    if (!file)
+    if (fopen_s(&file, filename, "r") != 0) {
         return -1;
+    }
     error = ini_parse_file(file, handler, user);
     fclose(file);
     return error;
 }
+
 
 /* An ini_reader function to read the next line from a string buffer. This
    is the fgets() equivalent used by ini_parse_string(). */
