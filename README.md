@@ -173,3 +173,14 @@ If the version is out of date, please [create an issue or pull request](https://
 ## Related links ##
 
 * [Conan package for inih](https://github.com/mohamedghita/conan-inih) (Conan is a C/C++ package manager)
+## AI-generated ProductMaps
+
+
+
+| Github file | ProductMap |
+|-------------|------------|
+| [INIReader.cpp](https://github.com/benhoyt/inih/blob/master/cpp/INIReader.cpp) | [Link to Map](https://product-map.ai/app/public?url=https://github.com/benhoyt/inih/blob/master/cpp/INIReader.cpp) |
+
+Contact ProductMap if you have any questions at [juan@product-map.ai](juan@product-map.ai).
+
+Last updated on Mon Feb 03 22:56:07 UTC 2025.
