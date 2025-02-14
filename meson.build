@@ -12,6 +12,7 @@ distro_install = get_option('distro_install')
 extra_args = []
 
 if distro_install
+    cmake = import('cmake')
     pkg = import('pkgconfig')
 else
     if not get_option('multi-line_entries')
@@ -86,6 +87,19 @@ lib_inih = library('inih',
 if distro_install
     install_headers('ini.h')
 
+    cmdata = configuration_data()
+    if host_machine.system() == 'windows' and get_option('default_library') == 'shared'
+      cmdata.set('EXTRA_CFLAGS', '-DINI_SHARED_LIB')
+    else
+      cmdata.set('EXTRA_CFLAGS', '')
+    endif
+
+    cmake.configure_package_config_file(
+        name : 'inih',
+        input : 'inihConfig.cmake.in',
+        configuration : cmdata,
+    )
+
     pkg.generate(lib_inih,
         name : 'inih',
         description : 'simple .INI file parser',
@@ -120,6 +134,19 @@ if get_option('with_INIReader')
 
     if distro_install
         install_headers('cpp/INIReader.h')
+
+        cmdata = configuration_data()
+        if host_machine.system() == 'windows' and get_option('default_library') == 'shared'
+          cmdata.set('EXTRA_CFLAGS', '-DINI_SHARED_LIB')
+        else
+          cmdata.set('EXTRA_CFLAGS', '')
+        endif
+
+        cmake.configure_package_config_file(
+            name : 'INIReader',
+            input : 'INIReaderConfig.cmake.in',
+            configuration : cmdata,
+        )
 
         pkg.generate(lib_INIReader,
             name : 'INIReader',
