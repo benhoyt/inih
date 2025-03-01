@@ -56,7 +56,7 @@ long INIReader::GetInteger(const string& section, const string& name, long defau
     return end > value ? n : default_value;
 }
 
-INI_API int64_t INIReader::GetInteger64(const std::string& section, const std::string& name, int64_t default_value) const
+INI_API int64_t INIReader::GetInteger64(const string& section, const string& name, int64_t default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -76,7 +76,7 @@ unsigned long INIReader::GetUnsigned(const string& section, const string& name, 
     return end > value ? n : default_value;
 }
 
-INI_API uint64_t INIReader::GetUnsigned64(const std::string& section, const std::string& name, uint64_t default_value) const
+INI_API uint64_t INIReader::GetUnsigned64(const string& section, const string& name, uint64_t default_value) const
 {
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
@@ -107,6 +107,30 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return false;
     else
         return default_value;
+}
+
+std::vector<string> INIReader::Sections() const
+{
+    std::set<string> sectionSet;
+    for (std::map<string, string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
+        size_t pos = it->first.find('=');
+        if (pos != string::npos) {
+            sectionSet.insert(it->first.substr(0, pos));
+        }
+    }
+    return std::vector<string>(sectionSet.begin(), sectionSet.end());
+}
+
+std::vector<string> INIReader::Keys(const string& section) const
+{
+    std::vector<string> keys;
+    string keyPrefix = MakeKey(section, "");
+    for (std::map<string, string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
+        if (it->first.compare(0, keyPrefix.length(), keyPrefix) == 0) {
+            keys.push_back(it->first.substr(keyPrefix.length()));
+        }
+    }
+    return keys;
 }
 
 bool INIReader::HasSection(const string& section) const

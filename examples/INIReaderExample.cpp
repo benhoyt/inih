@@ -24,5 +24,20 @@ int main()
               << ", user.nose=" << reader.HasValue("user", "nose") << "\n";
     std::cout << "Has sections: user=" << reader.HasSection("user")
               << ", fizz=" << reader.HasSection("fizz") << "\n";
+    
+    std::cout << "Sections:\n";
+    std::vector<std::string> sections = reader.Sections();
+    for (std::vector<std::string>::const_iterator it = sections.begin(); it != sections.end(); ++it) {
+        std::cout << "- " << *it << "\n";
+    }
+    
+    for (std::vector<std::string>::const_iterator it = sections.begin(); it != sections.end(); ++it) {
+        std::cout << "Keys in section [" << *it << "]:\n";
+        std::vector<std::string> keys = reader.Keys(*it);
+        for (std::vector<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit) {
+            std::cout << "- " << *kit << "\n";
+        }
+    }
+    
     return 0;
 }
