@@ -5,10 +5,10 @@ Sections:
 - protocol
 - user
 Keys in section [protocol]:
-  - version
+- version
 Keys in section [user]:
-  - active
-  - email
-  - name
-  - pi
-  - trillion
+- active
+- email
+- name
+- pi
+- trillion
