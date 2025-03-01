@@ -89,6 +89,8 @@ public:
     // and valid false values are "false", "no", "off", "0" (not case sensitive).
     INI_API bool GetBoolean(const std::string& section, const std::string& name, bool default_value) const;
 
+    INI_API void SetValue(const std::string& section, const std::string& name, const std::string& value);
+
     // Return true if the given section exists (section must contain at least
     // one name=value pair).
     INI_API bool HasSection(const std::string& section) const;
