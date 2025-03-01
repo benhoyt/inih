@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include <cstdint>
+#include <vector>
 
 // Visibility symbols, required for Windows DLLs
 #ifndef INI_API
