@@ -35,7 +35,7 @@ int main()
         std::cout << "Keys in section [" << *it << "]:\n";
         std::vector<std::string> keys = reader.Keys(*it);
         for (std::vector<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit) {
-            std::cout << "  - " << *kit << "\n";
+            std::cout << "- " << *kit << "\n";
         }
     }
     
