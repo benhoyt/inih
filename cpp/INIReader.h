@@ -91,9 +91,6 @@ public:
     // and valid false values are "false", "no", "off", "0" (not case sensitive).
     INI_API bool GetBoolean(const std::string& section, const std::string& name, bool default_value) const;
 
-    // Sets value of the specified key
-    INI_API void SetValue(const std::string& section, const std::string& name, const std::string& value);
-
     // Return a newly-allocated vector of all section names, in alphabetical order.
     INI_API std::vector<std::string> Sections() const;
 
