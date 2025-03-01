@@ -109,8 +109,30 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return default_value;
 }
 
-void SetValue(const std::string& section, const std::string& name, const std::string& value) {
+void INIReader::SetValue(const std::string& section, const std::string& name, const std::string& value) {
     _values[MakeKey(section, name)] = value;
+}
+
+std::vector<std::string> INIReader::Sections() const {
+    std::set<std::string> sectionSet;
+    for (const auto& pair : _values) {
+        size_t pos = pair.first.find('=');
+        if (pos != std::string::npos) {
+            sectionSet.insert(pair.first.substr(0, pos));
+        }
+    }
+    return std::vector<std::string>(sectionSet.begin(), sectionSet.end());
+}
+
+std::vector<std::string> INIReader::Keys(const std::string& section) const {
+    std::vector<std::string> keys;
+    string keyPrefix = MakeKey(section, "");
+    for (const auto& pair : _values) {
+        if (pair.first.compare(0, keyPrefix.length(), keyPrefix) == 0) {
+            keys.push_back(pair.first.substr(keyPrefix.length()));
+        }
+    }
+    return keys;
 }
 
 bool INIReader::HasSection(const string& section) const
