@@ -115,10 +115,10 @@ void INIReader::SetValue(const std::string& section, const std::string& name, co
 
 std::vector<std::string> INIReader::Sections() const {
     std::set<std::string> sectionSet;
-    for (const auto& pair : _values) {
-        size_t pos = pair.first.find('=');
+    for (std::map<std::string, std::string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
+        size_t pos = it->first.find('=');
         if (pos != std::string::npos) {
-            sectionSet.insert(pair.first.substr(0, pos));
+            sectionSet.insert(it->first.substr(0, pos));
         }
     }
     return std::vector<std::string>(sectionSet.begin(), sectionSet.end());
@@ -126,10 +126,10 @@ std::vector<std::string> INIReader::Sections() const {
 
 std::vector<std::string> INIReader::Keys(const std::string& section) const {
     std::vector<std::string> keys;
-    string keyPrefix = MakeKey(section, "");
-    for (const auto& pair : _values) {
-        if (pair.first.compare(0, keyPrefix.length(), keyPrefix) == 0) {
-            keys.push_back(pair.first.substr(keyPrefix.length()));
+    std::string keyPrefix = MakeKey(section, "");
+    for (std::map<std::string, std::string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
+        if (it->first.compare(0, keyPrefix.length(), keyPrefix) == 0) {
+            keys.push_back(it->first.substr(keyPrefix.length()));
         }
     }
     return keys;
