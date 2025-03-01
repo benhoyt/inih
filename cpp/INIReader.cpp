@@ -109,6 +109,10 @@ bool INIReader::GetBoolean(const string& section, const string& name, bool defau
         return default_value;
 }
 
+void SetValue(const std::string& section, const std::string& name, const std::string& value) {
+    _values[MakeKey(section, name)] = value;
+}
+
 bool INIReader::HasSection(const string& section) const
 {
     const string key = MakeKey(section, "");
