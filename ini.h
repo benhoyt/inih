@@ -47,7 +47,12 @@ extern "C" {
 #endif
 #endif
 
-/* Typedef for prototype of handler function. */
+/* Typedef for prototype of handler function.
+
+   Note that even though the value parameter has type "const char*", the user
+   may cast to "char*" and modify its content, as the value is not used again
+   after the call to ini_handler.
+*/
 #if INI_HANDLER_LINENO
 typedef int (*ini_handler)(void* user, const char* section,
                            const char* name, const char* value,
