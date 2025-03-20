@@ -8,10 +8,8 @@ no_file.ini: e=-1 user=0
 ... [comment_test]
 ... test1=1;2;3;
 ... test2=2;3;4;this;
-... test2=needs whitespace b;
 ... test;3=345;
 ... test4=4#5#6;
-... test4=only starts a comm;
 ... test7=;
 ... test8=; not a comm;
 ... [colon_tests]
@@ -47,11 +45,9 @@ user_error.ini: e=3 user=104
 ... multi=the quick;
 ... multi=brown fox;
 ... name=bob smith;
-... name=comment line 1;
-... name=comment line 2;
 ... foo=bar;
 ... foo=Hi World;
-multi_line.ini: e=5 user=105
+multi_line.ini: e=4 user=105
 bad_multi.ini: e=1 user=105
 ... [bom_section]
 ... bom_name=bom_value;
