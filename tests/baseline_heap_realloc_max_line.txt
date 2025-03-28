@@ -20,7 +20,7 @@ no_file.ini: e=-1 user=0
 ... funny2=with : col;
 ... funny3=two = equa;
 ... funny4=two : colo;
-normal.ini: e=2 user=101
+normal.ini: e=1 user=101
 ... [section1]
 ... name1=value1;
 ... name2=value2;
@@ -65,4 +65,4 @@ duplicate_sections.ini: e=0 user=108
 ... key1=val1;
 no_value.ini: e=2 user=109
 ... name=value;
-long_section.ini: e=2 user=110
+long_section.ini: e=1 user=110
