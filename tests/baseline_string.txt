@@ -10,11 +10,10 @@ crlf: e=0 user=102
 ... [sec]
 ... foo=0123456789012;
 ... bar=4321;
-long line: e=3 user=103
+long line: e=2 user=103
 ... [sec]
 ... foo=0123456789012;
-... bix=1234;
-long continued: e=0 user=104
+long continued: e=2 user=104
 ... [s]
 ... a=1;
 ... c=3;
