@@ -165,17 +165,14 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             /* Read 1 byte to check the stream isn't at EOF and that the next
                character isn't a newline -- both of which would be okay. */
             if (reader(abyss, 2, stream) != NULL && abyss[0] != '\n') {
-                if (!error) {
+                if (!error)
                     error = lineno;
-                }
 
-#if !INI_STOP_ON_FIRST_ERROR
                 /* Consume stream up to the next newline. */
-                while (reader(abyss, sizeof(abyss), stream) != NULL
-                       && abyss[strlen(abyss) - 1] != '\n'
-                );
-#endif
-
+                while (reader(abyss, sizeof(abyss), stream) != NULL) {
+                    if (abyss[strlen(abyss) - 1] == '\n')
+                        break;
+                }
             }
         }
 
