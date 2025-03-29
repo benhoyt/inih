@@ -160,22 +160,15 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 
         lineno++;
 
-        /* Check the line doesn't exceed INI_MAX_LINE bytes. */
+        /* If line exceeded INI_MAX_LINE bytes, discard till end of line. */
         if (offset == max_line - 1 && line[offset - 1] != '\n') {
-            /* Read 1 byte to check the stream isn't at EOF and that the next
-               character isn't a newline -- both of which would be okay. */
-            if (reader(abyss, 2, stream) != NULL && abyss[0] != '\n') {
+            while (reader(abyss, sizeof(abyss), stream) != NULL) {
                 if (!error)
                     error = lineno;
-
-                /* Consume stream up to the next newline. */
-                while (reader(abyss, sizeof(abyss), stream) != NULL) {
-                    if (abyss[strlen(abyss) - 1] == '\n')
-                        break;
-                }
+                if (abyss[strlen(abyss) - 1] == '\n')
+                    break;
             }
         }
-
 
         start = line;
 #if INI_ALLOW_BOM
