@@ -107,7 +107,6 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 #endif
 #if INI_ALLOW_REALLOC && !INI_USE_STACK
     char* new_line;
-    char* rstatus;
 #endif
     char section[MAX_SECTION] = "";
 #if INI_ALLOW_MULTILINE
@@ -151,9 +150,10 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 return -2;
             }
             line = new_line;
-            rstatus = reader(line + offset, (int)(max_line - offset), stream);
+            if (reader(line + offset, (int)(max_line - offset), stream) == NULL)
+                break;
             offset += strlen(line + offset);
-            if (rstatus == NULL || max_line >= INI_MAX_LINE)
+            if (max_line >= INI_MAX_LINE)
                 break;
         }
 #endif
