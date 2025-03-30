@@ -66,3 +66,14 @@ duplicate_sections.ini: e=0 user=108
 no_value.ini: e=2 user=109
 ... name=value;
 long_section.ini: e=1 user=110
+... [width = 18]
+... _123456789=1234567;
+... [width = 19]
+... _123456789=12345678;
+... [width = 20]
+... _123456789=12345678;
+... [2 assigns]
+... _123456789=12345678;
+... [no trailing \n]
+... _123456782=12345678;
+long_line.ini: e=10 user=111

@@ -73,5 +73,6 @@ int main(void)
     parse("duplicate_sections.ini");
     parse("no_value.ini");
     parse("long_section.ini");
+    parse("long_line.ini");
     return 0;
 }
