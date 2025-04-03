@@ -1,0 +1,2 @@
+# Ensure MSVC CI tests with the same line endings that are used in the tarball
+/tests/baseline_*.txt		eol=lf

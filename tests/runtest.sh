@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -euo pipefail
+set -eu
 
 cd "$(dirname "${1}")"
-diff "${1}" <("${2}")
+"$2" | diff "${1}" -

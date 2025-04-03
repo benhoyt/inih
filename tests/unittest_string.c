@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
 #include "../ini.h"
 
 int User;
@@ -33,6 +37,9 @@ void parse(const char* name, const char* string) {
 
 int main(void)
 {
+#ifdef _WIN32
+    _setmode(_fileno(stdout), _O_BINARY);
+#endif
     parse("empty string", "");
     parse("basic", "[section]\nfoo = bar\nbazz = buzz quxx");
     parse("crlf", "[section]\r\nhello = world\r\nforty_two = 42\r\n");
