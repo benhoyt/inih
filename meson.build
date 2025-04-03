@@ -103,7 +103,10 @@ subdir('tests')
 
 #### INIReader ####
 if get_option('with_INIReader')
-    add_languages('cpp')
+    add_languages(
+        'cpp',
+        native : false
+    )
     inc_INIReader = include_directories('cpp')
 
     src_INIReader = files(join_paths('cpp', 'INIReader.cpp'))
