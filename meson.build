@@ -1,7 +1,7 @@
 project('inih',
     ['c'],
     license : 'BSD-3-Clause',
-    version : '58',
+    version : '59',
     default_options : ['cpp_std=c++11'],
     meson_version: '>=0.56.0'
 )
@@ -103,7 +103,10 @@ subdir('tests')
 
 #### INIReader ####
 if get_option('with_INIReader')
-    add_languages('cpp')
+    add_languages(
+        'cpp',
+        native : false
+    )
     inc_INIReader = include_directories('cpp')
 
     src_INIReader = files(join_paths('cpp', 'INIReader.cpp'))
