@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
 #include "../ini.h"
 
 void* ini_malloc(size_t size) {
@@ -44,6 +48,9 @@ void parse(const char* name, const char* string) {
 
 int main(void)
 {
+#ifdef _WIN32
+    _setmode(_fileno(stdout), _O_BINARY);
+#endif
     parse("basic", "[section]\nfoo = bar\nbazz = buzz quxx");
     return 0;
 }
