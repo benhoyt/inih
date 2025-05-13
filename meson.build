@@ -99,7 +99,7 @@ inih_dep = declare_dependency(
     include_directories : inc_inih
 )
 
-if get_option('with_test_suite')
+if get_option('tests')
     subdir('tests')
 endif
 
