@@ -73,3 +73,8 @@ option('allow_realloc',
   value : false,
   description : 'allow initial malloc size to grow to max line length (when using the heap)'
 )
+option('tests',
+  type : 'boolean',
+  value : true,
+  description : 'build the test suite (noisy)'
+)

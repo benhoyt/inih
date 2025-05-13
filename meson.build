@@ -99,7 +99,9 @@ inih_dep = declare_dependency(
     include_directories : inc_inih
 )
 
-subdir('tests')
+if get_option('tests')
+    subdir('tests')
+endif
 
 #### INIReader ####
 if get_option('with_INIReader')
