@@ -316,6 +316,7 @@ int ini_parse_string(const char* string, ini_handler handler, void* user) {
     return ini_parse_string_length(string, strlen(string), handler, user);
 }
 
+/* See documentation in header file. */
 int ini_parse_string_length(const char* string, size_t length,
                             ini_handler handler, void* user) {
     ini_parse_string_ctx ctx;
