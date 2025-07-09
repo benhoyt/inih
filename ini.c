@@ -238,7 +238,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 if (!HANDLER(user, section, name, value) && !error)
                     error = lineno;
             }
-            else if (!error) {
+            else {
                 /* No '=' or ':' found on name[=:]value line */
 #if INI_ALLOW_NO_VALUE
                 *end = '\0';
@@ -246,7 +246,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 if (!HANDLER(user, section, name, NULL) && !error)
                     error = lineno;
 #else
-                error = lineno;
+                if (!error)
+                    error = lineno;
 #endif
             }
         }

@@ -77,3 +77,4 @@ long_section.ini: e=1 user=110
 ... [no trailing \n]
 ... _123456782=12345678;
 long_line.ini: e=10 user=111
+name_only_after_error.ini: e=1 user=111
