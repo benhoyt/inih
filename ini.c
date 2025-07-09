@@ -44,7 +44,8 @@ typedef struct {
     size_t num_left;
 } ini_parse_string_ctx;
 
-/* Strip whitespace chars off end of given string, in place. Return s. */
+/* Strip whitespace chars off end of given string, in place. end must be a
+   pointer to the NUL terminator at the end of the string. Return s. */
 static char* ini_rstrip(char* s, char* end)
 {
     while (end > s && isspace((unsigned char)(*--end)))
