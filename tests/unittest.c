@@ -81,5 +81,6 @@ int main(void)
     parse("no_value.ini");
     parse("long_section.ini");
     parse("long_line.ini");
+    parse("name_only_after_error.ini");
     return 0;
 }
