@@ -44,12 +44,12 @@ typedef struct {
     size_t num_left;
 } ini_parse_string_ctx;
 
-/* Strip whitespace chars off end of given string, in place. Return s. */
-static char* ini_rstrip(char* s)
+/* Strip whitespace chars off end of given string, in place. end must be a
+   pointer to the NUL terminator at the end of the string. Return s. */
+static char* ini_rstrip(char* s, char* end)
 {
-    char* p = s + strlen(s);
-    while (p > s && isspace((unsigned char)(*--p)))
-        *p = '\0';
+    while (end > s && isspace((unsigned char)(*--end)))
+        *end = '\0';
     return s;
 }
 
@@ -178,7 +178,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             start += 3;
         }
 #endif
-        start = ini_rstrip(ini_lskip(start));
+        start = ini_rstrip(ini_lskip(start), line + offset);
 
         if (strchr(INI_START_COMMENT_PREFIXES, *start)) {
             /* Start-of-line comment */
@@ -187,9 +187,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
         else if (*prev_name && *start && start > line) {
 #if INI_ALLOW_INLINE_COMMENTS
             end = ini_find_chars_or_comment(start, NULL);
-            if (*end)
-                *end = '\0';
-            ini_rstrip(start);
+            *end = '\0';
+            ini_rstrip(start, end);
 #endif
             /* Non-blank line with leading whitespace, treat as continuation
                of previous name's value (as per Python configparser). */
@@ -221,15 +220,14 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
             end = ini_find_chars_or_comment(start, "=:");
             if (*end == '=' || *end == ':') {
                 *end = '\0';
-                name = ini_rstrip(start);
+                name = ini_rstrip(start, end);
                 value = end + 1;
 #if INI_ALLOW_INLINE_COMMENTS
                 end = ini_find_chars_or_comment(value, NULL);
-                if (*end)
-                    *end = '\0';
+                *end = '\0';
 #endif
                 value = ini_lskip(value);
-                ini_rstrip(value);
+                ini_rstrip(value, end);
 
 #if INI_ALLOW_MULTILINE
                 ini_strncpy0(prev_name, name, sizeof(prev_name));
@@ -242,7 +240,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 /* No '=' or ':' found on name[=:]value line */
 #if INI_ALLOW_NO_VALUE
                 *end = '\0';
-                name = ini_rstrip(start);
+                name = ini_rstrip(start, end);
                 if (!HANDLER(user, section, name, NULL) && !error)
                     error = lineno;
 #else
