@@ -172,4 +172,4 @@ If the version is out of date, please [create an issue or pull request](https://
 
 ## Related links ##
 
-* [Conan package for inih](https://github.com/mohamedghita/conan-inih) (Conan is a C/C++ package manager)
+* [Conan package for inih](https://github.com/conan-io/conan-center-index/tree/master/recipes/inih) (Conan is a C/C++ package manager)
