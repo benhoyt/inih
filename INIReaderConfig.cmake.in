@@ -1,0 +1,12 @@
+@PACKAGE_INIT@
+
+set(inih_CFLAGS "${inih_CFLAGS}")
+list(APPEND inih_CFLAGS "@EXTRA_CFLAGS@")
+
+include(CMakeFindDependencyMacro)
+find_dependency(PkgConfig)
+
+pkg_check_modules(INIREADER REQUIRED INIReader IMPORTED_TARGET)
+if(NOT TARGET inih::inireader)
+    add_library(inih::inireader ALIAS PkgConfig::INIREADER)
+endif()
