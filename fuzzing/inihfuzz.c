@@ -24,7 +24,7 @@ int dumper(void* user, const char* section, const char* name,
     printf("... %s%s%s;\n", name, value ? "=" : "", value ? value : "");
 
     if (!value) {
-        // Happens when INI_ALLOW_NO_VALUE=1 and line has no value (no '=' or ':')
+        /* Happens when INI_ALLOW_NO_VALUE=1 and line has no value (no '=' or ':') */
         return 1;
     }
 
