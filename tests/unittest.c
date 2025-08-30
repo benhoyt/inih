@@ -51,7 +51,7 @@ int dumper(void* user, const char* section, const char* name,
         return 1;
     }
 
-    return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
+    return strcmp(name, "user") == 0 && strcmp(value, "parse_error") == 0 ? 0 : 1;
 }
 
 void parse(const char* fname) {
