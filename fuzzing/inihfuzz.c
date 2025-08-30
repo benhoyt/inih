@@ -24,11 +24,11 @@ int dumper(void* user, const char* section, const char* name,
     printf("... %s%s%s;\n", name, value ? "=" : "", value ? value : "");
 
     if (!value) {
-        // Happens when INI_ALLOW_NO_VALUE=1 and line has no value (no '=' or ':')
+        /* Happens when INI_ALLOW_NO_VALUE=1 and line has no value (no '=' or ':') */
         return 1;
     }
 
-    return strcmp(name, "user")==0 && strcmp(value, "parse_error")==0 ? 0 : 1;
+    return strcmp(name, "user") == 0 && strcmp(value, "parse_error") == 0 ? 0 : 1;
 }
 
 void parse(const char* fname) {
@@ -41,7 +41,7 @@ void parse(const char* fname) {
     u++;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
     if (argc < 2) {
         printf("usage: inihfuzz file.ini\n");
