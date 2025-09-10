@@ -10,9 +10,9 @@ int main()
     INIReader reader_success("../tests/normal.ini");
 
     std::cout
-        << "reader_file_not_found errmsg: " << reader_file_not_found.ParseErrorMessage() << "\n"
-        << "reader_parse_error errmsg: " << reader_parse_error.ParseErrorMessage() << "\n"
-        << "reader_success errmsg: " << reader_success.ParseErrorMessage() << "\n";
+        << "reader_file_not_found errmsg: \"" << reader_file_not_found.ParseErrorMessage() << "\"\n"
+        << "reader_parse_error errmsg: \"" << reader_parse_error.ParseErrorMessage() << "\"\n"
+        << "reader_success errmsg: \"" << reader_success.ParseErrorMessage() << "\"\n";
 
     return 0;
 }

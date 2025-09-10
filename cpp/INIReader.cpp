@@ -51,7 +51,7 @@ string INIReader::ParseErrorMessage() const
         return "unable to open file";
 
     case 0:
-        return "success";
+        return "";
     }
 
     // This should never be reached. It probably means a new error code was
