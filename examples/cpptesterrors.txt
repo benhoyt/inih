@@ -1,0 +1,3 @@
+reader_file_not_found errmsg: "unable to open file"
+reader_parse_error errmsg: "parse error on line 5; missing ']' or '='?"
+reader_success errmsg: ""
