@@ -39,7 +39,7 @@ string INIReader::ParseErrorMessage() const
     // indicated a user defined error, an unterminated section name, or a name
     // without a value.
     if (_error > 0) {
-        return "parse error on line " + std::to_string(_error);
+        return "parse error on line " + std::to_string(_error) + "; missing ']' or '='?";
     }
 
     // If _error is negative it is a system type error, and 0 means success.
@@ -56,7 +56,7 @@ string INIReader::ParseErrorMessage() const
 
     // This should never be reached. It probably means a new error code was
     // added to the C API without updating this method.
-    return "unknown error";
+    return "unknown error " + std::to_string(_error);
 }
 
 string INIReader::Get(const string& section, const string& name, const string& default_value) const
