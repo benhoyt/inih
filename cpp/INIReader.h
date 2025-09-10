@@ -57,10 +57,8 @@ public:
     // memory allocation error.
     INI_API int ParseError() const;
 
-    // Return a short string that describes the type of error that occurred.
-    // It will return "" (empty string) if there was no error. Thus,
-    // std::string::empty() can be used on the result to determine if an error
-    // occurred.
+    // Return a message that describes the type of error that occurred.
+    // It will return "" (empty string) if there was no error.
     INI_API std::string ParseErrorMessage() const;
 
     // Get a string value from INI file, returning default_value if not found.
