@@ -18,6 +18,7 @@ https://github.com/benhoyt/inih
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <assert.h>
 
 #include "ini.h"
 
@@ -122,6 +123,10 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
     int error = 0;
     char abyss[16];  /* Used to consume input when a line is too long. */
     size_t abyss_len;
+
+    assert(reader != NULL);
+    assert(stream != NULL);
+    assert(handler != NULL);
 
 #if !INI_USE_STACK
     line = (char*)ini_malloc(INI_INITIAL_ALLOC);
