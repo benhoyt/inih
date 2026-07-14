@@ -26,3 +26,6 @@ foreach name, properties : tests
   exe = executable('unittest_' + name, src_inih, test_src, c_args : ['-Wall', properties['args']])
   test('test_' + name, runtest, depends : [exe], args : [files('baseline_' + name + '.txt'), exe.full_path()])
 endforeach
+
+multiline_name_exe = executable('unittest_multiline_name', src_inih, 'unittest_multiline_name.c', c_args : ['-Wall'])
+test('test_multiline_name', multiline_name_exe)
