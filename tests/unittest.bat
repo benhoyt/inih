@@ -13,3 +13,4 @@
 @call tcc ..\ini.c -I..\ -DINI_ALLOW_NO_VALUE=1 -run unittest.c > baseline_allow_no_value.txt
 @call tcc ..\ini.c -I..\ -DINI_CUSTOM_ALLOCATOR=1 -DINI_USE_STACK=0 -DINI_ALLOW_REALLOC=1 -DINI_INITIAL_ALLOC=12 -run unittest_alloc.c > baseline_alloc.txt
 @call tcc ..\ini.c -I..\ -run unittest_multiline_name.c
+@call tcc ..\ini.c -I..\ -DINI_MAX_SECTION=51 -DINI_MAX_NAME=51 -DTEST_CUSTOM_LIMITS=1 -run unittest_multiline_name.c

@@ -5,7 +5,22 @@
 
 #include "../ini.h"
 
-#define LONG_NAME "01234567890123456789012345678901234567890123456789"
+#define NAME_49 "0123456789012345678901234567890123456789012345678"
+#define NAME_50 "01234567890123456789012345678901234567890123456789"
+
+#ifdef TEST_CUSTOM_LIMITS
+#if INI_MAX_SECTION < 51 || INI_MAX_NAME < 51
+#error "INI_MAX_SECTION and INI_MAX_NAME must include the NUL terminator"
+#endif
+#define TEST_SECTION NAME_50
+#define TEST_NAME NAME_50
+#else
+#if INI_MAX_SECTION != 50 || INI_MAX_NAME != 50
+#error "default section or name buffer size changed"
+#endif
+#define TEST_SECTION "section"
+#define TEST_NAME NAME_49
+#endif
 
 typedef struct {
     int calls;
@@ -19,7 +34,7 @@ static int capture(void* user, const char* section, const char* name,
     const char* expected_value = context->calls == 0 ? "first" : "second";
 
     context->calls++;
-    if (strcmp(section, "section") != 0 || strcmp(name, LONG_NAME) != 0 ||
+    if (strcmp(section, TEST_SECTION) != 0 || strcmp(name, TEST_NAME) != 0 ||
         strcmp(value, expected_value) != 0) {
         context->valid = 0;
     }
@@ -28,7 +43,7 @@ static int capture(void* user, const char* section, const char* name,
 
 int main(void)
 {
-    const char* config = "[section]\n" LONG_NAME "=first\n"
+    const char* config = "[" TEST_SECTION "]\n" TEST_NAME "=first\n"
                          "  second\n";
     capture_context context = {0, 1};
     int error = ini_parse_string(config, capture, &context);

@@ -27,5 +27,10 @@ foreach name, properties : tests
   test('test_' + name, runtest, depends : [exe], args : [files('baseline_' + name + '.txt'), exe.full_path()])
 endforeach
 
-multiline_name_exe = executable('unittest_multiline_name', src_inih, 'unittest_multiline_name.c', c_args : ['-Wall'])
-test('test_multiline_name', multiline_name_exe)
+multiline_name_default_exe = executable('unittest_multiline_name_default', src_inih, 'unittest_multiline_name.c', c_args : ['-Wall'])
+test('test_multiline_name_default', multiline_name_default_exe)
+
+multiline_name_custom_exe = executable(
+  'unittest_multiline_name_custom', src_inih, 'unittest_multiline_name.c',
+  c_args : ['-Wall', '-DINI_MAX_SECTION=51', '-DINI_MAX_NAME=51', '-DTEST_CUSTOM_LIMITS=1'])
+test('test_multiline_name_custom', multiline_name_custom_exe)

@@ -141,6 +141,15 @@ INI_API int ini_parse_string_length(const char* string, size_t length, ini_handl
 #define INI_MAX_LINE 200
 #endif
 
+/* Sizes of the section and previous name buffers, including the NUL
+   terminator. */
+#ifndef INI_MAX_SECTION
+#define INI_MAX_SECTION 50
+#endif
+#ifndef INI_MAX_NAME
+#define INI_MAX_NAME 50
+#endif
+
 /* Nonzero to allow heap line buffer to grow via realloc(), zero for a
    fixed-size buffer of INI_MAX_LINE bytes. Only applies if INI_USE_STACK is
    zero. */

@@ -62,6 +62,10 @@ $CC -DINI_CUSTOM_ALLOCATOR=1 -DINI_USE_STACK=0 -DINI_ALLOW_REALLOC=1 -DINI_INITI
 ./unittest_alloc > baseline_alloc.txt
 rm -f unittest_alloc
 
-$CC ../ini.c unittest_multiline_name.c -o unittest_multiline_name
-./unittest_multiline_name || exit $?
-rm -f unittest_multiline_name
+$CC ../ini.c unittest_multiline_name.c -o unittest_multiline_name_default
+./unittest_multiline_name_default || exit $?
+rm -f unittest_multiline_name_default
+
+$CC -DINI_MAX_SECTION=51 -DINI_MAX_NAME=51 -DTEST_CUSTOM_LIMITS=1 ../ini.c unittest_multiline_name.c -o unittest_multiline_name_custom
+./unittest_multiline_name_custom || exit $?
+rm -f unittest_multiline_name_custom

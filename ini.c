@@ -36,8 +36,8 @@ void* ini_realloc(void* ptr, size_t size);
 #endif
 #endif
 
-#define MAX_SECTION 50
-#define MAX_NAME INI_MAX_LINE
+#define MAX_SECTION INI_MAX_SECTION
+#define MAX_NAME INI_MAX_NAME
 
 /* Used by ini_parse_string() to keep track of string parsing state. */
 typedef struct {
