@@ -44,6 +44,9 @@ string INIReader::ParseErrorMessage() const
 
     // If _error is negative it is a system type error, and 0 means success.
     switch (_error) {
+    case -3:
+        return "unable to read file";
+
     case -2:
         return "unable to allocate memory";
 

@@ -53,8 +53,8 @@ public:
     INI_API explicit INIReader(const char *buffer, size_t buffer_size);
 
     // Return the result of ini_parse(), i.e., 0 on success, line number of
-    // first error on parse error, -1 on file open error, or -2 if there was a
-    // memory allocation error.
+    // first error on parse error, -1 on file open error, -2 if there was a
+    // memory allocation error, or -3 on file read error.
     INI_API int ParseError() const;
 
     // Return a message that describes the type of error that occurred.
