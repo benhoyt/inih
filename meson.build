@@ -50,6 +50,14 @@ else
     if max_line_length != 200
         arg_static += ['-DINI_MAX_LINE=' + max_line_length.to_string()]
     endif
+    max_section_length = get_option('max_section_length')
+    if max_section_length != 50
+        arg_static += ['-DINI_MAX_SECTION=' + max_section_length.to_string()]
+    endif
+    max_name_length = get_option('max_name_length')
+    if max_name_length != 50
+        arg_static += ['-DINI_MAX_NAME=' + max_name_length.to_string()]
+    endif
     initial_malloc_size = get_option('initial_malloc_size')
     if initial_malloc_size != 200
         arg_static += ['-DINI_INITIAL_ALLOC=' + initial_malloc_size.to_string()]
