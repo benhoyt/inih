@@ -76,8 +76,8 @@ typedef char* (*ini_reader)(char* str, int num, void* stream);
    of handler call). Handler should return nonzero on success, zero on error.
 
    Returns 0 on success, line number of first error on parse error (doesn't
-   stop on first error), -1 on file open error, or -2 on memory allocation
-   error (only when INI_USE_STACK is zero).
+   stop on first error), -1 on file open error, -2 on memory allocation error
+   (only when INI_USE_STACK is zero), or -3 on file read error.
 */
 INI_API int ini_parse(const char* filename, ini_handler handler, void* user);
 

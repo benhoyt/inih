@@ -26,3 +26,6 @@ foreach name, properties : tests
   exe = executable('unittest_' + name, src_inih, test_src, c_args : ['-Wall', properties['args']])
   test('test_' + name, runtest, depends : [exe], args : [files('baseline_' + name + '.txt'), exe.full_path()])
 endforeach
+
+file_error_exe = executable('unittest_file_error', src_inih, 'unittest_file_error.c', c_args : ['-Wall'])
+test('test_file_error', file_error_exe)
