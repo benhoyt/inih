@@ -63,6 +63,16 @@ option('max_line_length',
   value : 200,
   description : 'maximum line length in bytes'
 )
+option('max_section_length',
+  type : 'integer',
+  value : 50,
+  description : 'size in bytes of the section name buffer, including the NUL terminator'
+)
+option('max_name_length',
+  type : 'integer',
+  value : 50,
+  description : 'size in bytes of the property name buffer, including the NUL terminator'
+)
 option('initial_malloc_size',
   type : 'integer',
   value : 200,

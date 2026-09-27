@@ -141,6 +141,20 @@ INI_API int ini_parse_string_length(const char* string, size_t length, ini_handl
 #define INI_MAX_LINE 200
 #endif
 
+/* Maximum size in bytes, including the NUL terminator, of a "[section]" name.
+   A longer name is silently truncated to fit, so a caller that cannot tolerate
+   truncation must size this above its longest valid name and reject a name
+   whose length reaches INI_MAX_SECTION - 1. */
+#ifndef INI_MAX_SECTION
+#define INI_MAX_SECTION 50
+#endif
+
+/* Maximum size in bytes, including the NUL terminator, of a "name" in a
+   name=value pair. Longer names are truncated as above. */
+#ifndef INI_MAX_NAME
+#define INI_MAX_NAME 50
+#endif
+
 /* Nonzero to allow heap line buffer to grow via realloc(), zero for a
    fixed-size buffer of INI_MAX_LINE bytes. Only applies if INI_USE_STACK is
    zero. */
