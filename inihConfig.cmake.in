@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+set(inih_CFLAGS "${inih_CFLAGS}")
+list(APPEND inih_CFLAGS "@EXTRA_CFLAGS@")
+
+include(CMakeFindDependencyMacro)
+find_dependency(PkgConfig)
+
+# Use pkg-config to locate inih and create a target
+pkg_check_modules(INIH REQUIRED inih IMPORTED_TARGET)
+if(NOT TARGET inih::inih)
+    add_library(inih::inih ALIAS PkgConfig::INIH)
+endif()
