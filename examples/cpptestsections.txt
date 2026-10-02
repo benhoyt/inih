@@ -1,0 +1,15 @@
+Parse error: 0
+Sections: [] [=prefix] [foo] [foo=bar] [foo=bar=baz] [only=child] [tail=]
+[] exists=1, keys: [root]
+[foo] exists=1, keys: [zzz]
+[FOO=BAR] exists=1, keys: [inner] [other]
+[foo=bar=baz] exists=1, keys: [leaf]
+[=prefix] exists=1, keys: [leading]
+[tail=] exists=1, keys: [trailing]
+[tail] exists=0, keys:
+[only] exists=0, keys:
+[only=child] exists=1, keys: [value]
+[empty] exists=0, keys:
+[missing] exists=0, keys:
+Empty reader sections: 0
+[] exists=0, keys:
