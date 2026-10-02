@@ -139,7 +139,8 @@ std::vector<string> INIReader::Sections() const
 {
     std::set<string> sectionSet;
     for (std::map<string, string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
-        size_t pos = it->first.find('=');
+        // Names cannot contain '=', so the last '=' separates section and name.
+        size_t pos = it->first.rfind('=');
         if (pos != string::npos) {
             sectionSet.insert(it->first.substr(0, pos));
         }
@@ -152,7 +153,8 @@ std::vector<string> INIReader::Keys(const string& section) const
     std::vector<string> keys;
     string keyPrefix = MakeKey(section, "");
     for (std::map<string, string>::const_iterator it = _values.begin(); it != _values.end(); ++it) {
-        if (it->first.compare(0, keyPrefix.length(), keyPrefix) == 0) {
+        if (it->first.compare(0, keyPrefix.length(), keyPrefix) == 0 &&
+            it->first.rfind('=') == keyPrefix.length() - 1) {
             keys.push_back(it->first.substr(keyPrefix.length()));
         }
     }
@@ -163,10 +165,12 @@ bool INIReader::HasSection(const string& section) const
 {
     const string key = MakeKey(section, "");
     std::map<string, string>::const_iterator pos = _values.lower_bound(key);
-    if (pos == _values.end())
-        return false;
-    // Does the key at the lower_bound pos start with "section"?
-    return pos->first.compare(0, key.length(), key) == 0;
+    while (pos != _values.end() && pos->first.compare(0, key.length(), key) == 0) {
+        if (pos->first.rfind('=') == key.length() - 1)
+            return true;
+        ++pos;
+    }
+    return false;
 }
 
 bool INIReader::HasValue(const string& section, const string& name) const
