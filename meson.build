@@ -82,12 +82,20 @@ inc_inih = include_directories('.')
 
 src_inih = files('ini.c')
 
+# Android packages shared libraries without the versioned filenames Meson
+# normally creates for soversion. Keep the ABI version on other platforms.
+if host_machine.system() == 'android'
+    library_kwargs = {}
+else
+    library_kwargs = {'soversion': '0'}
+endif
+
 lib_inih = library('inih',
     [src_inih],
     include_directories : inc_inih,
     c_args : [arg_static, extra_args],
     install : distro_install,
-    soversion : '0',
+    kwargs : library_kwargs,
     gnu_symbol_visibility: 'hidden'
 )
 
@@ -127,7 +135,7 @@ if get_option('with_INIReader')
         include_directories : inc_INIReader,
         dependencies : inih_dep,
         install : distro_install,
-        soversion : '0',
+        kwargs : library_kwargs,
         gnu_symbol_visibility: 'hidden'
     )
 
