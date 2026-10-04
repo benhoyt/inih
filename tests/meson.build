@@ -26,3 +26,6 @@ foreach name, properties : tests
   exe = executable('unittest_' + name, src_inih, test_src, c_args : ['-Wall', properties['args']])
   test('test_' + name, runtest, depends : [exe], args : [files('baseline_' + name + '.txt'), exe.full_path()])
 endforeach
+
+no_value_multiline = executable('unittest_no_value_multiline', src_inih, 'unittest_no_value_multiline.c', c_args : ['-Wall', '-DINI_ALLOW_NO_VALUE=1'])
+test('test_no_value_multiline', no_value_multiline)
