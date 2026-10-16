@@ -142,6 +142,27 @@ Some differences between inih and Python's [ConfigParser](http://docs.python.org
 * In case you use inih as a Meson subproject, you can use the `inih_dep` and `INIReader_dep` dependency variables. You might want to set `default_library=static` and `distro_install=false` for the subproject. An official Wrap is provided on [WrapDB](https://wrapdb.mesonbuild.com/inih).
 * For packagers: if you want to tag the version in the pkg-config file, you will need to do this downstream. Add `version : '<version_as_int>',` after the `license` tag in the `project()` function and `version : meson.project_version(),` after the `soversion` tag in both `library()` functions.
 
+### Building with debug information ###
+
+To build optimized shared libraries with debug information on Linux, run from
+inih's source directory:
+
+```sh
+meson setup build --buildtype=debugoptimized -Ddefault_library=shared
+meson compile -C build
+meson test -C build
+```
+
+Meson's [`debugoptimized` build type](https://mesonbuild.com/Builtin-options.html#details-for-buildtype)
+enables debug information and optimization level 2 (`-g -O2` with GCC).
+This applies to both `inih` and `INIReader`; Meson also enables position-independent
+code for the shared libraries. To change an existing build directory, use
+`meson configure build -Dbuildtype=debugoptimized` and then rebuild.
+
+The libraries in the build directory retain their debug information. If you
+install them, keep Meson's `strip` option disabled (the default) and do not use
+`meson install --strip` if you need that information in the installed libraries.
+
 ## Using inih with tipi.build
 
 `inih` can be easily used in [tipi.build](https://tipi.build) projects simply by adding the following entry to your `.tipi/deps` (replace `r56` with the latest version tag):
