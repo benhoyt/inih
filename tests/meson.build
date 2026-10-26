@@ -18,7 +18,8 @@ tests = {
   'heap_string': { 'src': 'unittest_string.c', 'args': ['-DINI_USE_STACK=0', '-DINI_MAX_LINE=20', '-DINI_INITIAL_ALLOC=20'] },
   'call_handler_on_new_section': { 'args': ['-DINI_CALL_HANDLER_ON_NEW_SECTION=1'] },
   'allow_no_value': { 'args': ['-DINI_ALLOW_NO_VALUE=1'] },
-  'alloc': { 'src': 'unittest_alloc.c', 'args': ['-DINI_CUSTOM_ALLOCATOR=1', '-DINI_USE_STACK=0', '-DINI_ALLOW_REALLOC=1', '-DINI_INITIAL_ALLOC=12'] }
+  'alloc': { 'src': 'unittest_alloc.c', 'args': ['-DINI_CUSTOM_ALLOCATOR=1', '-DINI_USE_STACK=0', '-DINI_ALLOW_REALLOC=1', '-DINI_INITIAL_ALLOC=12'] },
+  'file_error': { 'src': 'unittest_file_error.c', 'args': [] }
 }
 
 foreach name, properties : tests

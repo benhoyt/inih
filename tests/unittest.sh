@@ -61,3 +61,7 @@ rm -f unittest_allow_no_value
 $CC -DINI_CUSTOM_ALLOCATOR=1 -DINI_USE_STACK=0 -DINI_ALLOW_REALLOC=1 -DINI_INITIAL_ALLOC=12 ../ini.c unittest_alloc.c -o unittest_alloc
 ./unittest_alloc > baseline_alloc.txt
 rm -f unittest_alloc
+
+$CC ../ini.c unittest_file_error.c -o unittest_file_error
+./unittest_file_error > baseline_file_error.txt
+rm -f unittest_file_error

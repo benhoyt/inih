@@ -272,7 +272,8 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
 /* See documentation in header file. */
 int ini_parse_file(FILE* file, ini_handler handler, void* user)
 {
-    return ini_parse_stream((ini_reader)fgets, file, handler, user);
+    int error = ini_parse_stream((ini_reader)fgets, file, handler, user);
+    return ferror(file) ? -3 : error;
 }
 
 /* See documentation in header file. */
