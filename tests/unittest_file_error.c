@@ -1,9 +1,14 @@
-#include <stdio.h>
+/* inih -- tests for file read errors */
 
+#include <stdio.h>
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
 #include "../ini.h"
 
-static int handler(void* user, const char* section, const char* name,
-                   const char* value)
+int handler(void* user, const char* section, const char* name,
+            const char* value)
 {
     (void)user;
     (void)section;
@@ -15,17 +20,22 @@ static int handler(void* user, const char* section, const char* name,
 int main(void)
 {
     const char* filename = "unittest_file_error.tmp";
-    FILE* file = fopen(filename, "w");
-    int error;
-    int read_error;
+    FILE* file;
+    int e;
 
-    if (!file)
+#ifdef _WIN32
+    _setmode(_fileno(stdout), _O_BINARY);
+#endif
+
+    /* Reading from a write-only stream sets the stream's error indicator. */
+    file = fopen(filename, "w");
+    if (!file) {
+        printf("unable to open %s\n", filename);
         return 1;
-
-    error = ini_parse_file(file, handler, NULL);
-    read_error = ferror(file);
+    }
+    e = ini_parse_file(file, handler, NULL);
+    printf("read_error: e=%d ferror=%d\n", e, ferror(file) != 0);
     fclose(file);
     remove(filename);
-
-    return read_error && error == -3 ? 0 : 2;
+    return 0;
 }
