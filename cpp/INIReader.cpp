@@ -10,12 +10,25 @@
 // https://github.com/benhoyt/inih
 
 #include <algorithm>
+#include <cerrno>
 #include <cctype>
 #include <cstdlib>
+#include <limits>
 #include "../ini.h"
 #include "INIReader.h"
 
 using std::string;
+
+namespace {
+
+bool IsNegative(const char* value)
+{
+    while (std::isspace(static_cast<unsigned char>(*value)))
+        ++value;
+    return *value == '-';
+}
+
+}  // namespace
 
 INIReader::INIReader(const string& filename)
 {
@@ -81,8 +94,9 @@ long INIReader::GetInteger(const string& section, const string& name, long defau
     const char* value = valstr.c_str();
     char* end;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
+    errno = 0;
     long n = strtol(value, &end, 0);
-    return end > value ? n : default_value;
+    return end > value && errno == 0 ? n : default_value;
 }
 
 INI_API int64_t INIReader::GetInteger64(const string& section, const string& name, int64_t default_value) const
@@ -91,8 +105,13 @@ INI_API int64_t INIReader::GetInteger64(const string& section, const string& nam
     const char* value = valstr.c_str();
     char* end;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
-    int64_t n = strtoll(value, &end, 0);
-    return end > value ? n : default_value;
+    errno = 0;
+    long long n = strtoll(value, &end, 0);
+    if (end <= value || errno != 0 ||
+            n < std::numeric_limits<int64_t>::min() ||
+            n > std::numeric_limits<int64_t>::max())
+        return default_value;
+    return static_cast<int64_t>(n);
 }
 
 unsigned long INIReader::GetUnsigned(const string& section, const string& name, unsigned long default_value) const
@@ -100,9 +119,12 @@ unsigned long INIReader::GetUnsigned(const string& section, const string& name, 
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
     char* end;
+    if (IsNegative(value))
+        return default_value;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
+    errno = 0;
     unsigned long n = strtoul(value, &end, 0);
-    return end > value ? n : default_value;
+    return end > value && errno == 0 ? n : default_value;
 }
 
 INI_API uint64_t INIReader::GetUnsigned64(const string& section, const string& name, uint64_t default_value) const
@@ -110,9 +132,15 @@ INI_API uint64_t INIReader::GetUnsigned64(const string& section, const string& n
     string valstr = Get(section, name, "");
     const char* value = valstr.c_str();
     char* end;
+    if (IsNegative(value))
+        return default_value;
     // This parses "1234" (decimal) and also "0x4D2" (hex)
-    uint64_t n = strtoull(value, &end, 0);
-    return end > value ? n : default_value;
+    errno = 0;
+    unsigned long long n = strtoull(value, &end, 0);
+    if (end <= value || errno != 0 ||
+            n > std::numeric_limits<uint64_t>::max())
+        return default_value;
+    return static_cast<uint64_t>(n);
 }
 
 double INIReader::GetReal(const string& section, const string& name, double default_value) const

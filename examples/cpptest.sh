@@ -7,3 +7,7 @@ rm INIReaderExample
 g++ -Wall INIReaderExampleErrors.cpp ../cpp/INIReader.cpp ../ini.c -o INIReaderExampleErrors
 ./INIReaderExampleErrors > cpptesterrors.txt
 rm INIReaderExampleErrors
+
+g++ -Wall INIReaderTest.cpp ../cpp/INIReader.cpp ../ini.c -o INIReaderTest
+./INIReaderTest > cpptestintegers.txt
+rm INIReaderTest

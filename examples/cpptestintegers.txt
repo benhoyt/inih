@@ -1,0 +1,1 @@
+INIReader integer tests passed
