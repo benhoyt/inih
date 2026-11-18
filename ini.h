@@ -150,7 +150,8 @@ INI_API int ini_parse_string_length(const char* string, size_t length, ini_handl
 #endif
 
 /* Maximum size in bytes, including the NUL terminator, of a "name" in a
-   name=value pair. Longer names are truncated as above. */
+   name=value pair when INI_ALLOW_MULTILINE is enabled. Must be at least 1.
+   Longer names are truncated as above. Ignored when multiline is disabled. */
 #ifndef INI_MAX_NAME
 #define INI_MAX_NAME 50
 #endif

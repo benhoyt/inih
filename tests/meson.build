@@ -27,3 +27,25 @@ foreach name, properties : tests
   exe = executable('unittest_' + name, src_inih, test_src, c_args : ['-Wall', properties['args']])
   test('test_' + name, runtest, depends : [exe], args : [files('baseline_' + name + '.txt'), exe.full_path()])
 endforeach
+
+name_tests = {
+  'name': [],
+  'name_no_value': ['-DINI_ALLOW_NO_VALUE=1'],
+  'name_single': ['-DINI_ALLOW_MULTILINE=0'],
+  'name_single_zero': ['-DINI_ALLOW_MULTILINE=0', '-DINI_MAX_NAME=0'],
+  'name_single_zero_no_value': ['-DINI_ALLOW_MULTILINE=0', '-DINI_MAX_NAME=0', '-DINI_ALLOW_NO_VALUE=1'],
+  'name_minimum': ['-DINI_MAX_NAME=1'],
+  'name_minimum_no_value': ['-DINI_MAX_NAME=1', '-DINI_ALLOW_NO_VALUE=1'],
+  'name_small': ['-DINI_MAX_NAME=4'],
+  'name_small_no_value': ['-DINI_MAX_NAME=4', '-DINI_ALLOW_NO_VALUE=1'],
+  'name_large': ['-DINI_MAX_NAME=1024'],
+  'name_heap': ['-DINI_USE_STACK=0'],
+  'name_heap_realloc': ['-DINI_USE_STACK=0', '-DINI_ALLOW_REALLOC=1', '-DINI_INITIAL_ALLOC=5'],
+  'name_lineno': ['-DINI_HANDLER_LINENO=1'],
+  'name_no_inline_comments': ['-DINI_ALLOW_INLINE_COMMENTS=0'],
+}
+
+foreach name, args : name_tests
+  exe = executable('unittest_' + name, src_inih, 'unittest_name.c', c_args : ['-Wall'] + args)
+  test('test_' + name, exe)
+endforeach

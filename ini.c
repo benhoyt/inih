@@ -22,6 +22,10 @@ https://github.com/benhoyt/inih
 
 #include "ini.h"
 
+#if INI_ALLOW_MULTILINE && INI_MAX_NAME < 1
+#error INI_MAX_NAME must be at least 1 when INI_ALLOW_MULTILINE is enabled
+#endif
+
 #if !INI_USE_STACK
 #if INI_CUSTOM_ALLOCATOR
 #include <stddef.h>
@@ -233,7 +237,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 ini_rstrip(value, end);
 
 #if INI_ALLOW_MULTILINE
-                ini_strncpy0(prev_name, name, sizeof(prev_name));
+                name = ini_strncpy0(prev_name, name, sizeof(prev_name));
 #endif
                 /* Valid name[=:]value pair found, call handler */
                 if (!HANDLER(user, section, name, value) && !error)
@@ -245,7 +249,7 @@ int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
                 *end = '\0';
                 name = ini_rstrip(start, end);
 #if INI_ALLOW_MULTILINE
-                ini_strncpy0(prev_name, name, sizeof(prev_name));
+                name = ini_strncpy0(prev_name, name, sizeof(prev_name));
 #endif
                 if (!HANDLER(user, section, name, NULL) && !error)
                     error = lineno;
