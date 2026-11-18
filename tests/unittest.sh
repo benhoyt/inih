@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 CC="${CC:-gcc} -Wall"
 
 $CC ../ini.c unittest.c -o unittest_multi
